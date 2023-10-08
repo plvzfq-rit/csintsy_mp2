@@ -57,6 +57,10 @@ def GrandfatherOf(x: str, y: str) -> Atom:
     return Atom("GrandfatherOf", x.lower(), y.lower())
 
 
+def GrandparentOf(x: str, y: str) -> Atom:
+    return Atom("GrandparentOf", x.lower(), y.lower())
+
+
 def Aunt(x: str) -> Atom:
     return Atom("Aunt", x.lower())
 
@@ -71,6 +75,10 @@ def Uncle(x: str) -> Atom:
 
 def UncleOf(x: str, y: str) -> Atom:
     return Atom("UncleOf", x.lower(), y.lower())
+
+
+def PiblingOf(x: str, y: str) -> Atom:
+    return Atom("PiblingOf", x.lower(), y.lower())
 
 
 def Son(x: str) -> Atom:
@@ -113,6 +121,18 @@ def SiblingOf(x: str, y: str) -> Atom:
     return Atom("SiblingOf", x.lower(), y.lower())
 
 
+def NieceOf(x: str, y: str) -> Atom:
+    return Atom("NieceOf", x.lower(), y.lower())
+
+
+def NephewOf(x: str, y: str) -> Atom:
+    return Atom("NephewOf", x.lower(), y.lower())
+
+
+def NiblingOf(x: str, y: str) -> Atom:
+    return Atom("NiblingOf", x.lower(), y.lower())
+
+
 def AndStar(Predicates: list, index: int, X: str = "$x") -> Atom:
     if index == len(Predicates) - 1:
         return Predicates[index](X)
@@ -120,16 +140,16 @@ def AndStar(Predicates: list, index: int, X: str = "$x") -> Atom:
         return And(Predicates[index](X), AndStar(Predicates, index + 1, X))
 
 
-def NotAndStar(Predicates: list, index: int, X: str = "$x") -> Atom:
+def OrStar(Predicates: list, index: int, X: str = "$x") -> Atom:
     if index == len(Predicates) - 1:
-        return Not(Predicates[index](X))
+        return Predicates[index](X)
     else:
-        return And(Not(Predicates[index](X)), AndStar(Predicates, index + 1, X))
+        return Or(Predicates[index](X), OrStar(Predicates, index + 1, X))
 
 
 def All_Not_Implies(Given, Predicates: list) -> Atom:
     X = "$x"
-    return Forall(X, Implies(Given(X), AndStar(Predicates, 0)))
+    return Forall(X, Implies(Given(X), Not(OrStar(Predicates, 0))))
 
 
 def All_Implies(Given, Predicates: list) -> Atom:
@@ -138,17 +158,27 @@ def All_Implies(Given, Predicates: list) -> Atom:
 
 
 def All_Combine(Given, Yes_Predicates: list, No_Predicates: list) -> Atom:
-    X = "$x"
     return And(
         All_Implies(Given, Yes_Predicates), All_Not_Implies(Given, No_Predicates)
     )
 
 
-def All_Combine_Two(
-    Given,
-    Yes_Predicates_1: list,
-    No_Predicates_1: list,
-    Yes_Predicates_2: list,
-    No_Predicates_2: list,
-) -> Atom:
-    pass
+# def All_Combine_Two(
+#     Given,
+#     Yes_Predicates_1: list,
+#     No_Predicates_1: list,
+#     Yes_Predicates_2: list,
+#     No_Predicates_2: list,
+
+# ) -> Atom:
+#     X = "$x"
+#     atoms = []
+#     if not Yes_Predicates_1:
+#         atoms.append(AndStar(Yes_Predicates_1))
+#     if not No_Predicates_1:
+#         atoms.append(Not(OrStar(No_Predicates_1)))
+#     if not Yes_Predicates_2:
+#         atoms.append(AndStar(Yes_Predicates_2))
+#     if not No_Predicates_2:
+#         atoms.append(Not(OrStar(No_Predicates_2)))
+#     return Forall(X, Implies(Given(X), AndStar(atoms, 0)))
