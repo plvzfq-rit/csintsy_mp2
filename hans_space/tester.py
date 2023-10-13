@@ -75,3 +75,6 @@ print(qCheck.takeQprompt(prompt))
 #     x.pop(values[i])
 # print(x)
 
+while True:
+    pr = input()
+    print(qCheck.takeQprompt(pr))
