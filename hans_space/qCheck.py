@@ -56,29 +56,35 @@ def __takeWhoprompt(p):
         return False
 #Checks all prompts that start with "Are", return False if invalid 4,5 or 6 if Valid
 def __takeArepromptfor2(p):
-    x = p.split()
-    if(len(x) == 8 and x[4]+x[5]+x[6] in valid2ArePrompts and x[2] == "and"): 
-            return 4
-    elif(x[4] in valid2ArePrompts and x[2] == "and"):
-        return 5
-    elif(x[-3]+x[-2] in valid2ArePrompts and x[-5] == "and"):
-        return __verifyKids(x)
-    else:
+    try: 
+        x = p.split()
+        if(len(x) == 8 and x[4]+x[5]+x[6] in valid2ArePrompts and x[2] == "and"): 
+                return 4
+        elif(x[4] in valid2ArePrompts and x[2] == "and"):
+            return 5
+        elif(x[-3]+x[-2] in valid2ArePrompts and x[-5] == "and"):
+            return __verifyKids(x)
+        else:
+            return False
+    except:
         return False
 
 #A helper function that checks if the way children were inputted are valid
 def __verifyKids(x):
-    values = [0,-5,-3,-2,-1]
-    for i in values:
-        x.pop(i)
-    
-    valid = 6
-    
-    for i in range(len(x) - 2):
-        if(x[i][1] != ','):
-            return False
+    try:
+        values = [0,-5,-3,-2,-1]
+        for i in values:
+            x.pop(i)
+        
+        valid = 6
+        
+        for i in range(len(x) - 2):
+            if(x[i][1] != ','):
+                return False
 
-    if (valid != 6):
+        if (valid != 6):
+            return False
+        else:
+            return True
+    except:
         return False
-    else:
-        return True
