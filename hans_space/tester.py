@@ -59,12 +59,19 @@ IspartOne = "Are x and y the parents of z?"
 prompt = IspartOne
 isValid = qCheck.takeQprompt(prompt)
 print (isValid)
-IspartOne = "Are x, y and z children of z?"
+IspartOne = "Are x, y, and z children of z?"
 prompt = IspartOne
 isValid = qCheck.takeQprompt(prompt)
 print (isValid)
 
+prompt = "Are x y, z, d, f and r children of z?"
+print(qCheck.takeQprompt(prompt))
 
+# values = [0,-1,-2,-3,-5]
 
-
+# prompt = prompt[:-1]
+# x = prompt.split()
+# for i in values:
+#     x.pop(values[i])
+# print(x)
 
