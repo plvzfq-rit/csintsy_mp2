@@ -19,6 +19,8 @@ if __name__ == "__main__":
     # list containing special prompts to stop the program
     halters = ["end", "exit", "stop"]
 
+    greetings = ["hi", "hello", "hey", "penis", "greetings"]
+
     # program will run indefinitely until halted
     while True:
         # prompt for the user
@@ -33,6 +35,8 @@ if __name__ == "__main__":
 
         elif user_input == "":
             raiseError()
+
+        elif user_input == 
 
         elif user_input == "pyk":
             print(kb.getAllConstants())
