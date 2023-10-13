@@ -1,7 +1,7 @@
 #Lines 1-11 represent built in words that a user must choose from
-validIsPrompts = ["sister", "brother", "mother","father", 
-                "grandmother", "daughter", "son", "child",
-                "uncle", "grandfather", "aunt"]
+validIsPrompts = ["asister", "abrother", "themother","thefather", 
+                "agrandmother", "adaughter", "ason", "achild",
+                "anuncle", "agrandfather", "anaunt"]
 
 validWhoArePrompts = ["siblings","sisters", "brothers", "parents", 
                       "daughters", "sons", "children"]
@@ -36,7 +36,7 @@ def takeQprompt(p):
 def __takeIsprompt(p):
     try:
         x = p.split()
-        if x[3] in validIsPrompts and len(x) == 6 and x[2] == "a" and x[4] == "of":
+        if x[2]+x[3] in validIsPrompts and len(x) == 6 and x[4] == "of":
             return 1
     except:
         return False
