@@ -11,7 +11,7 @@ validWhoIsPrompts = ["mother" , "father"]
 valid2ArePrompts = ["siblings", "relatives","theparentsof","childrenof"]
 
 #Function that accepts initial user prompt
-#Returns False if Invalid, an Integer if Valid
+#Returns False if Invalid, an Integer, and the name/names of the involved if Valid
 def takeQprompt(p):
     
     if (p[-1] == '?'):
@@ -29,8 +29,12 @@ def takeQprompt(p):
         except:
             return False,None,None
         if retval is not False:
-            x,y = __getIsvals(pArr)
-            return True,x,y
+            if retval == 1:
+                x,y = __getIsvals(pArr)
+                return True,x,y
+            elif retval == 2 or retval == 3:
+                x = __getWhoVals(pArr)
+                return True,x,None
         return retval
     else:
         return False,None,None
@@ -92,6 +96,10 @@ def __verifyKids(x):
     except:
         return False
 
-#Function to find the X and Y
+#Function to find the X and Y on statements that start with "If"
 def __getIsvals(p):
     return p[1], p[-1]
+
+#Function to find the X on statements that start with "Who"
+def __getWhoVals(p):
+    return p[-1]
