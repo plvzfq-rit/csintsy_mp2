@@ -25,19 +25,23 @@ def takeQprompt(p):
             elif (pArr[0] == "Are"):
                 retval = __takeArepromptfor2(p)
             else:
-                retval = False,None,None
+                retval = False,None
         except:
-            return False,None,None
+            return False,None
         if retval is not False:
             if retval == 1:
                 x = __getIsvals(pArr)
-                return True,x
+                return True,x,pArr[3]
             elif retval == 2 or retval == 3:
                 x = __getWhoVals(pArr)
-                return True,x
+                return True,x,pArr[3]
+            elif retval == 4:
+                x = __getAreParents(pArr)
+                return True,x,pArr[5]
+            #elif retval == 5:
         return retval
     else:
-        return False,None,None
+        return False,None
 
 #Checks all prompts that start with "is", return False if invalid, 1 if Valid
 def __takeIsprompt(p):
@@ -109,4 +113,9 @@ def __getWhoVals(p):
     res.append(p[-1])
     return res
 
-#def __
+def __getAreParents(p):
+    res = []
+    res.append(p[1])
+    res.append(p[3])
+    res.append(p[7])
+    return res
