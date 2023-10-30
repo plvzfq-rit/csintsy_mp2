@@ -1,15 +1,18 @@
 from re import *
-from qCheck import *
 from input_functions import *
 from pyswip import *
-from logic_functions import *
+from qCheck import *
 
-
-# raises errors
+'''
+*-------------------------------------------------------------------------------------*
+Raises errors.
+*-------------------------------------------------------------------------------------*
+'''
 def raiseError():
     print("Sorry, I do not understand.")
 
 '''
+*-------------------------------------------------------------------------------------*
 Declares a specified relation from one argument to another in a given Prolog object.
 
 @param prolog   a Prolog object to declare to
@@ -18,31 +21,26 @@ Declares a specified relation from one argument to another in a given Prolog obj
 @param arg2     string containing second argument
 
 @return a string depicting success or failure.
+*-------------------------------------------------------------------------------------*
 '''
 def prologAssert121(prolog : Prolog, relation : str, arg1 : str, arg2 : str) -> str:
 
-    # creates a declaration of the specified relation
-    declaration = "{}_declaration({},{})".format(relation, arg1, arg2)
+    subs1 = list(prolog.query("{}_rule({},{})".format(relation, arg1, arg2)))
 
-    # creates a query that would later check declarations validity
-    rule_query = "{}_rule({},{})".format(relation, arg1, arg2)
+    if subs1 == []:
+        subs2 = list(prolog.query("cannot_be_{}_rule({},{})".format(relation, arg1, arg2)))
 
-    # asserts declaration
-    prolog.assertz(declaration)
+        if subs2 == []:
+            prolog.assertz("{}_declaration({},{})".format(relation, arg1, arg2))
+            return "OK! I learned something!"
 
-    # checks if declaration is valid
-    substitutions = list(prolog.query(rule_query))
-
-    # retracts if invalid and shows message showing so
-    if substitutions == []:
-        prolog.retract(declaration)
-        return "That's impossible!"
-    
-    # shows confirmation message
+        else:
+            return "Thats impossible!"
     else:
-        return "I learned something new!"
+        return "I already know that!"
 
 '''
+*-------------------------------------------------------------------------------------*
 Declares a specified relation from many arguments to another in a given Prolog object.
 
 @param prolog   a Prolog object to declare to
@@ -51,6 +49,7 @@ Declares a specified relation from many arguments to another in a given Prolog o
 @param arg2     string containing second argument
 
 @return a string depicting success or failure.
+*-------------------------------------------------------------------------------------*
 '''
 def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : str) -> str:
 
@@ -60,56 +59,37 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     # boundary of list
     num_args1 = len(args1)
 
+    # sentinel value 2
+    knew_it = False
+
     # looper
     i = 0
 
     # loops for all arguments, except is there is an erroneous value 
     while all_is_well and i < num_args1:
 
-        # creates a declaration of the specified relation
-        declaration = "{}_declaration({},{})".format(relation, args1[i], arg2)
+        subs1 = list(prolog.query("cannot_be_{}_rule({},{})".format(relation, args1[i], arg2)))
 
-        # creates a query that would later check declarations validity
-        rule_query = "{}_rule({},{})".format(relation, args1[i], arg2)
-
-        # asserts declaration
-        prolog.assertz(declaration)
-
-        # checks if declaration is valid
-        substitutions = list(prolog.query(rule_query))
-
-        # stops loop if invalid
-        if substitutions == []:
-            all_is_well = False
-
-        # continues loop otherwise
-        else:
+        if subs1 == []:
             i += 1
 
-
-    # activates if one of previous declarations was erroneous
-    if not all_is_well:
-
-        # another looper
-        j = 0
-
-        # gets rid of all declarations made so far
-        while j <= i:
-
-            try:
-                prolog.retract("{}_declaration({},{})".format(relation, args1[j], arg2))
-            except:
-                pass
-
-            # continues loop
-            j += 1
-        
-        # says that something went wrong
-        return "Some of it is impossible!"
+        else:
+            all_is_well = False
     
-    # shows confirmation message
+    if all_is_well:
+        i = 0
+        while i < num_args1:
+            subs1 = list(prolog.query("{}_rule({},{})".format(relation, args1[i], arg2)))
+            if subs1 == []:
+                prolog.assertz("{}_declaration({},{})".format(relation, args1[i], arg2))
+            else:
+                knew_it = knew_it or True
+        if knew_it:
+            return "I learned something new, though some were things I already knew."
+        else:
+            return "I learned something new!"
     else:
-        return "I learned something!"
+        return "Some things you just said are just impossible!"
 
 if __name__ == "__main__":
     # creating knowledge base
@@ -127,10 +107,11 @@ if __name__ == "__main__":
         print("> ", end="")
 
         # accepts input from user and strips whitespace
-        user_input = input().strip().lower()
+        user_input = input().strip()
 
         # creates clean copy of data of punctuation (except for '_')
         user_input_copy = sub('[^\w\s]', '', user_input)
+        user_input_copy = user_input_copy.lower()
 
         # stops the program if halted by user
         if user_input_copy in halters:
@@ -151,9 +132,6 @@ if __name__ == "__main__":
 
                 # proceeds if statements are valid
                 if statement_type != "null":
-                    
-                    # cleans data of punctuation (except for '_')
-                    # user_input = sub('[^\w\s]', '', user_input)
 
                     # splits data into words
                     words = user_input_copy.split()
@@ -162,6 +140,7 @@ if __name__ == "__main__":
                     match (statement_type):
 
                         case "father":
+                            # check if KB already know it
                             print(prologAssert121(prolog, "father", words[0], words[-1]))
 
                         case "mother":
@@ -215,11 +194,7 @@ if __name__ == "__main__":
             # identifies queries / questions
             elif user_input[-1] == "?":
                 # TODO: Implement checking for questions
-                if takeQprompt(user_input):
-                    print("Oho, a question")
-
-                else:
-                    raiseError()
+                print(takeQprompt(user_input))
 
             # raises an error if the prompt has not been recognized
             else:
