@@ -40,8 +40,9 @@ def takeQprompt(p):
                 return True,x,pArr[5]
             elif retval == 5:
                 x = __getSibsandRel(pArr)
-                return True,x,p[-1]
-        
+                return True,x,pArr[-1]
+            elif retval == 6:
+                print("lol")
         return retval
     else:
         return False,None
@@ -99,7 +100,7 @@ def __verifyKids(x):
         if (valid != 6):
             return False
         else:
-            return True
+            return 6
     except:
         return False
 
@@ -124,6 +125,7 @@ def __getAreParents(p):
     res.append(p[3])
     res.append(p[7])
     return res
+
 #Function to get the X and Y values on questions structured as Are _ and _ siblings/relatives
 def __getSibsandRel(p):
     res = []
