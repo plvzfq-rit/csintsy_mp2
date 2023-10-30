@@ -1,3 +1,5 @@
+# NOTE: THIS FILE HAS BEEN DEPRECATED
+
 from logic import *
 
 
