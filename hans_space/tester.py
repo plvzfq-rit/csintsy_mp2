@@ -64,8 +64,8 @@ def printLine():
 # isValid = qCheck.takeQprompt(prompt)
 # print (isValid)
 
-# prompt = "Are x y, z, d, f and r children of z?"
-# print(qCheck.takeQprompt(prompt))
+prompt = "Are x, y, z, d, f, and r children of z?"
+print(qCheck.takeQprompt(prompt))
 
 # values = [0,-1,-2,-3,-5]
 

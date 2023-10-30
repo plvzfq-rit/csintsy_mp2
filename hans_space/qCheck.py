@@ -42,10 +42,10 @@ def takeQprompt(p):
                 x = __getSibsandRel(pArr)
                 return True,x,pArr[-1]
             elif retval == 6:
-                print("lol")
-        return retval
+                x = __getChildren(pArr)
+                return True, x, pArr[-3]
     else:
-        return False,None
+        return False,None,None
 
 #Checks all prompts that start with "is", return False if invalid, 1 if Valid
 def __takeIsprompt(p):
@@ -133,3 +133,14 @@ def __getSibsandRel(p):
     res.append(p[3])
     return res
 
+#Function to get x1,x2, x... in questions structured as Are __. __. and __ children of __?
+def __getChildren(p):
+    values = [0,-5,-3,-2]
+    for i in values:
+        p.pop(i)
+    res = []
+    res.append(p[-1])
+    for i in range(p):
+        if i not in res:
+            res.append(i)
+    return res
