@@ -121,9 +121,9 @@ def __getWhoVals(p):
 #Function to find the x,y,z on for the question Are _ and _ the parents of _?
 def __getAreParents(p):
     res = []
+    res.append(p[7])
     res.append(p[1])
     res.append(p[3])
-    res.append(p[7])
     return res
 
 #Function to get the X and Y values on questions structured as Are _ and _ siblings/relatives
@@ -140,7 +140,7 @@ def __getChildren(p):
         p.pop(i)
     res = []
     res.append(p[-1])
-    for i in range(p):
+    for i in p:
         if i not in res:
             res.append(i)
     return res
