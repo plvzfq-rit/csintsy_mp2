@@ -38,7 +38,10 @@ def takeQprompt(p):
             elif retval == 4:
                 x = __getAreParents(pArr)
                 return True,x,pArr[5]
-            #elif retval == 5:
+            elif retval == 5:
+                x = __getSibsandRel(pArr)
+                return True,x,p[-1]
+        
         return retval
     else:
         return False,None
@@ -113,9 +116,18 @@ def __getWhoVals(p):
     res.append(p[-1])
     return res
 
+
+#Function to find the x,y,z on for the question Are _ and _ the parents of _?
 def __getAreParents(p):
     res = []
     res.append(p[1])
     res.append(p[3])
     res.append(p[7])
     return res
+#Function to get the X and Y values on questions structured as Are _ and _ siblings/relatives
+def __getSibsandRel(p):
+    res = []
+    res.append(p[1])
+    res.append(p[3])
+    return res
+
