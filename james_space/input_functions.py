@@ -35,6 +35,7 @@ def validateStatement(user_input: str) -> str:
 
     # checking for statements following the is-a structure
     elif generalStatementPattern.match(user_input):
+        
         # switch case
         match (words[2]):
             # checking for "the"
