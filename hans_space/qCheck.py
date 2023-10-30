@@ -1,7 +1,7 @@
 #Lines 1-11 represent built in words that a user must choose from
-validIsPrompts = ["sister", "brother", "mother","father", 
-                "grandmother", "daughter", "son", "child",
-                "uncle", "grandfather", "aunt"]
+validIsPrompts = ["asister", "abrother", "themother","thefather", 
+                "agrandmother", "adaughter", "ason", "achild",
+                "anuncle", "agrandfather", "anaunt"]
 
 validWhoArePrompts = ["siblings","sisters", "brothers", "parents", 
                       "daughters", "sons", "children"]
@@ -11,7 +11,7 @@ validWhoIsPrompts = ["mother" , "father"]
 valid2ArePrompts = ["siblings", "relatives","theparentsof","childrenof"]
 
 #Function that accepts initial user prompt
-#Returns False if Invalid, an Integer if Valid
+#Returns False if Invalid, an Integer, and the name/names of the involved if Valid
 def takeQprompt(p):
     
     if (p[-1] == '?'):
@@ -25,18 +25,25 @@ def takeQprompt(p):
             elif (pArr[0] == "Are"):
                 retval = __takeArepromptfor2(p)
             else:
-                retval = False
+                retval = False,None,None
         except:
-            return False
+            return False,None,None
+        if retval is not False:
+            if retval == 1:
+                x,y = __getIsvals(pArr)
+                return True,x,y
+            elif retval == 2 or retval == 3:
+                x = __getWhoVals(pArr)
+                return True,x,None
         return retval
     else:
-        return False
+        return False,None,None
 
 #Checks all prompts that start with "is", return False if invalid, 1 if Valid
 def __takeIsprompt(p):
     try:
         x = p.split()
-        if x[3] in validIsPrompts and len(x) == 6 and x[2] == "a" and x[4] == "of":
+        if x[2]+x[3] in validIsPrompts and len(x) == 6 and x[4] == "of":
             return 1
     except:
         return False
@@ -88,3 +95,11 @@ def __verifyKids(x):
             return True
     except:
         return False
+
+#Function to find the X and Y on statements that start with "If"
+def __getIsvals(p):
+    return p[1], p[-1]
+
+#Function to find the X on statements that start with "Who"
+def __getWhoVals(p):
+    return p[-1]
