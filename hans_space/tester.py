@@ -77,4 +77,9 @@ print(x)
 
 while True:
     pr = input()
-    print(qCheck.takeQprompt(pr))
+    val, names, type = qCheck.takeQprompt(pr)
+    validNames = qCheck.verifyName(names)
+    if validNames is True:
+        print("Doing Function")
+    else:
+        print("Names should be capitalized!")

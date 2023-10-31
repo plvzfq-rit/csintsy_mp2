@@ -11,7 +11,7 @@ validWhoIsPrompts = ["mother" , "father"]
 valid2ArePrompts = ["siblings", "relatives","theparentsof","childrenof"]
 
 #Function that accepts initial user prompt
-#Returns False if Invalid, an Integer, and an array with the first element being the main person, and the right the side.
+#Returns False if Invalid, an Integer, and an array with the first element being the subject, and the right the side.
 def takeQprompt(p):
     
     if (p[-1] == '?'):
@@ -144,3 +144,11 @@ def __getChildren(p):
         if i not in res:
             res.append(i)
     return res
+
+#Function to return if an array of names is valid s
+def verifyName(p):
+    for name in p:
+        if not name[0].isupper():
+            return False
+    return True
+
