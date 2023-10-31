@@ -1,6 +1,6 @@
 from re import *
 from input_functions import *
-from pyswip import *
+from pyswip import Prolog
 from qCheck import *
 
 '''
@@ -84,6 +84,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
                 prolog.assertz("{}_declaration({},{})".format(relation, args1[i], arg2))
             else:
                 knew_it = knew_it or True
+            i += 1
         if knew_it:
             return "I learned something new, though some were things I already knew."
         else:

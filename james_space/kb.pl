@@ -135,6 +135,8 @@ female_rule(A) :- daughter_declaration(A,_).
 % If it is stated that A is the aunt of B, then A is female.
 female_rule(A) :- aunt_declaration(A,_).
 
+
+
 % Masculinity (Male)
 
 % If it is stated that A is the father of B, then A is male.
@@ -159,6 +161,8 @@ mother_rule(A,B) :- \+ A == B, mother_declaration(A,B).
 
 % If A is the parent of B and A is female, then A is the mother of B.
 mother_rule(A,B) :- \+ A == B, parent_rule(A,B), female_rule(A).
+
+cannot_be_mother_rule(A,_) :- \+ female_rule(A); male_rule(A).
 
 cannot_be_mother_rule(_,B) :- mother_rule(_,B).
 
@@ -192,6 +196,8 @@ father_rule(A,B) :- \+ A == B, father_declaration(A,B).
 
 % If A is the parent of B and A is male, then A is the father of B.
 father_rule(A,B) :- \+ A == B, parent_rule(A,B), male_rule(A).
+
+cannot_be_father_rule(A,_) :- female_rule(A); \+ male_rule(A).
 
 cannot_be_father_rule(_,B) :- father_rule(_,B).
 
@@ -270,6 +276,8 @@ daughter_rule(A,B) :- \+ A == B, daughter_declaration(A,B).
 % If A is a child of B and A is female, then A is the duaghter of B.
 daughter_rule(A,B) :- \+ A == B, child_rule(A,B), female_rule(A).
 
+cannot_be_daughter_rule(A,_) :- \+ female_rule(A); male_rule(A).
+
 cannot_be_daughter_rule(A,B) :- parent_rule(A,B).
 
 cannot_be_daughter_rule(A,B) :- sibling_rule(A,B). 
@@ -300,6 +308,8 @@ son_rule(A,B) :- \+ A == B, son_declaration(A,B).
 
 % If A is a child of B and A is male, than A is the son of B.
 son_rule(A,B) :- \+ A == B, child_rule(A,B), male_rule(A).
+
+cannot_be_son_rule(A,_) :- female_rule(A); \+ male_rule(A).
 
 cannot_be_son_rule(A,B) :- parent_rule(A,B).
 
@@ -375,6 +385,8 @@ brother_rule(A,B) :- \+ A == B, brother_declaration(A,B).
 % If A is the sibling of B and A is male, then A is the brother of B.
 brother_rule(A,B) :- \+ A == B, sibling_rule(A,B), male_rule(A).
 
+cannot_be_brother_rule(A,_) :- female_rule(A); \+ male_rule(A).
+
 cannot_be_brother_rule(A,B) :- parent_rule(A,B).
 
 cannot_be_brother_rule(A,B) :- parent_rule(B,A). 
@@ -407,6 +419,8 @@ sister_rule(A,B) :- \+ A == B, brother_declaration(A,B).
 
 % If A is the sibling of B and A is female, then A is the sister of B.
 sister_rule(A,B) :- \+ A == B, sibling_rule(A,B), female_rule(A).
+
+cannot_be_sister_rule(A,_) :- \+ female_rule(A); male_rule(A).
 
 cannot_be_sister_rule(A,B) :- parent_rule(A,B).
 
@@ -486,6 +500,8 @@ grandfather_rule(A,B) :- \+ A == B, grandfather_declaration(A,B).
 % If A is the grandparent of B and A is male, then A is the grandfather of B.
 grandfather_rule(A,B) :- \+ A == B, grandparent_rule(A,B), male_rule(A).
 
+cannot_be_grandfather_rule(A,_) :- female_rule(A); \+ male_rule(A).
+
 cannot_be_grandfather_rule(A,B) :- parent_rule(A,B).
 
 cannot_be_grandfather_rule(A,B) :- parent_rule(B,A).
@@ -515,6 +531,9 @@ grandmother_rule(A,B) :- \+ A == B, grandmother_declaration(A,B).
 
 % If A is the grandparent of B and A is frmale, then A is the grandmother of B.
 grandmother_rule(A,B) :- \+ A == B, grandparent_rule(A,B), female_rule(A).
+
+
+cannot_be_grandmother_rule(A,_) :- \+ female_rule(A); male_rule(A).
 
 cannot_be_grandmother_rule(A,B) :- parent_rule(A,B).
 
@@ -563,6 +582,9 @@ uncle_rule(A,B) :- \+ A == B, uncle_declaration(A,B).
 % If A is a publing of B and A is male, then A is an uncle of B.
 uncle_rule(A,B) :- \+ A == B, pibling_rule(A,B), male_rule(A).
 
+
+cannot_be_uncle_rule(A,_) :- female_rule(A); \+ male_rule(A).
+
 cannot_be_uncle_rule(A,B) :- parent_rule(A,B).
 
 cannot_be_uncle_rule(A,B) :- parent_rule(B,A).
@@ -591,6 +613,8 @@ aunt_rule(A,B) :- \+ A == B, aunt_declaration(A,B).
 
 % If A is a publing of B and A is female, then A is an aunt of B.
 aunt_rule(A,B) :- \+ A == B, pibling_rule(A,B), male_rule(A).
+
+cannot_be_aunt_rule(A,_) :- \+ female_rule(A); male_rule(A).
 
 cannot_be_aunt_rule(A,B) :- parent_rule(A,B).
 
