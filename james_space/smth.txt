@@ -1,0 +1,5 @@
+parent_rule(A,B); parent_rule(B,A);
+sibling_rule(A,B); sibling_rule(B,A);
+child_rule(A,B); child_rule(B,A);
+grandparent_rule(A,B); grandparent_rule(B,A);
+pibling_rule(A,B); pibling_rule(B,A).
