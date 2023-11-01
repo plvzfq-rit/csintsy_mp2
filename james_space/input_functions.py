@@ -1,6 +1,5 @@
 from re import *
 
-
 def validateStatement(user_input: str) -> str:
     # regular expression for general pattern of is-a statement
     generalStatementPattern = compile(".*\sis\s(an|a|the)\s.*\sof\s.*\.")
@@ -41,7 +40,7 @@ def validateStatement(user_input: str) -> str:
             # checking for "the"
             case "the":
                 # must be a definitive, else false
-                if words[3] in definitives:
+                if words[3] in definitives and words[0].istitle() and words[-1][:len(words[-1])].istitle():
                     return words[3]
 
                 else:
@@ -50,7 +49,7 @@ def validateStatement(user_input: str) -> str:
             # checking for "an"
             case "an":
                 # must be undefinitive and starting with a vowel
-                if words[3] in undefinitives and words[3][0] in vowels:
+                if words[3] in undefinitives and words[3][0] in vowels and words[0].istitle() and words[-1][:len(words[-1])].istitle():
                     return words[3]
 
                 else:
@@ -59,7 +58,7 @@ def validateStatement(user_input: str) -> str:
             # checking for "a"
             case "a":
                 # must be undefinitive and starting with a consonant
-                if words[3] in undefinitives and words[3][0] not in vowels:
+                if words[3] in undefinitives and words[3][0] not in vowels and words[0].istitle() and words[-1][:len(words[-1])].istitle():
                     return words[3]
 
                 else:
@@ -72,7 +71,7 @@ def validateStatement(user_input: str) -> str:
     elif len(words) < 7:
         return "null"
 
-    elif words[1] == "and" and words[3] == "are" and words[4] == "siblings":
+    elif words[1] == "and" and words[3] == "are" and words[4] == "siblings" and words[0].istitle() and words[2].istitle():
         return words[4]
 
     elif (
@@ -81,6 +80,8 @@ def validateStatement(user_input: str) -> str:
         and words[4] == "the"
         and words[5] == "parents"
         and words[6] == "of"
+        and words[0].istitle()
+        and words[2].istitle()
     ):
         return words[5]
 
@@ -94,9 +95,17 @@ def validateStatement(user_input: str) -> str:
         for i in range(len(words) - 7):
             comma_checker = comma_checker and words[i][-1] == ","
         if comma_checker == True:
-            return "children"
+            children = [sub('[^\w\s]', '', words[i]) for i in range(0, len(words) - 7)]
+            children.append(sub('[^\w\s]', '', words[-7]))
+            children.append(sub('[^\w\s]', '', words[-5]))
+            areLegal = True
+            for child in children:
+                areLegal = areLegal and child.istitle()
+            if areLegal:
+                return "children"
+            else:
+                return "null"
         else:
             return "null"
-
     else:
         return "null"
