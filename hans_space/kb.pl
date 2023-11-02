@@ -1,42 +1,48 @@
+%Testers
+father_declaration(fill,fill).
+mother_declaration(fill,fill).
+brother_declaration(fill,fill).
 
-    sister_declaration(jennie,leslie).
-    sibling_declaration(lola, bob).
-    male_rule(bob).
-    female_rule(lola).
-    female_rule(a).
-    male_rule(b).
-    parent_declaration(X,Y).
-    parent_declaration(lola, a).
-    parent_declaration(lola, b).
+    %Testing siblings
+        %1
+        parent_declaration(a,b).
+        parent_declaration(a,c).
+        % siblings(b,c).
 
-    brother_declaration(X,Y).
+        %2
+        sibling_declaration(d,e).
+        % siblings(e,d).
 
+        %3 and 4
+        sister_declaration(f,g).
+        % siblings(f,g)
+        % siblings(g,f)
 
-
-    father_declaration(rod, kane).
-    mother_declaration(kane, doug).
-
+        %5 and 6
+        brother_declaration(h,i).
+        %siblings(h,i)
+        %siblings(i,h)
 
 
 % sibling rules
 
-    % X and Y are siblings if they share a parent
+    % 1. X and Y are siblings if they share a parent
     siblings(X,Y) :- parent_declaration(Z,X), parent_declaration(Z,Y), X \= Y;
 
-    % siblings are commutative and, X and Y are not the same person
-    sibling_declaration(Y,X) , X \= Y;
+    % 2. siblings are commutative and, X and Y are not the same person
+   (sibling_declaration(Y,X) , X \= Y);
 
-    % X and Y are siblings if X is the sister of Y, and X and Y are not the same person
-    sister_declaration(X,Y) , X \= Y;
+    % 3. X and Y are siblings if X is the sister of Y, and X and Y are not the same person
+    (   sister_declaration(X,Y) , X \= Y);
 
-    % X and Y are siblings if Y is the sister of X and, X and Y are not the same person
-    sister_declaration(Y,X) , X \= Y;
+    % 4. X and Y are siblings if Y is the sister of X and, X and Y are not the same person
+    (   sister_declaration(Y,X) , X \= Y);
 
-    % X and Y are siblings if X is the brother of Y and, X and Y are not the same person
-    brother_declaration(X,Y) , X \= Y;
+    % 5. X and Y are siblings if X is the brother of Y and, X and Y are not the same person
+    (   brother_declaration(X,Y) , X \= Y);
 
-    % X and Y are siblings if Y is the sister of X and, X and Y are not the same person
-    brother_declaration(Y,X) , X \= Y.
+    % 6. X and Y are siblings if Y is the sister of X and, X and Y are not the same person
+    (   brother_declaration(Y,X) , X \= Y).
 
 
 % sister rules
@@ -55,11 +61,8 @@
 
 % parent rules
 
-    % X is the parent of Y if X is the father of Y
-    parent_declaration(X,Y) :- father_declaration(X,Y).
-
     % X is the parent of Y if X is the mother of Y
-    parent_declaration(X,Y) :- mother_declaration(X,Y).
+    parent(X,Y) :- parent_declaration(X,Y).
 
     % X is the parent of Y if X is the mother of Y
     parent(X,Y) :- mother_declaration(X,Y).
@@ -70,21 +73,9 @@
     % X is the parent of Y if Y is the child of X
     parent(X,Y):- child_declaration(Y,X).
 
-    % X is the parent of Y, if Y is the grandchild of Z and X is the child of Z
-    parent(X,Y) :- grandparent(Z,Y), child(X,Z)
-
+    %implement grandparent rules
 
 % grandparent rules
 
-    grandparent(X,Y) :- parent_declaration(X,Z), parent_declaration(Z,Y).
+    grandparent(X,Y) :- parent(X,Z), parent(Z,Y).
 
-
-%child rules
-    % X is a child of Y if X is a child of Y
-    child(X,Y) :- child_declarationn(X,Y);
-    
-    % X is a child of Y if X is their parent
-    parent_declaration(X,Y);
-
-    % X is a child of Y if X and Z are siblings and Y is the parent of Z
-    siblings(X,Z), parent_declaration(Y,Z).
