@@ -55,16 +55,16 @@ male_rule(A) :- uncle_declaration(A,_).
 % If A is not equal to B and it is stated that A is the mother of B, then A is the mother of B.
 mother_rule(A,B) :- \+ A == B, mother_declaration(A,B).
 
-% If A is not a female, or A is a male, A cannot be the mother.
+% If A is not female or A is male, then A cannot be the mother of someone.
 cannot_be_mother_rule(A,_) :- \+ female_rule(A); male_rule(A).
 
-% If there is any person who is the mother of B, then A cannot be the mother of B.
+% If someone already is the mother of B, then someone else cannot be the mother of B.
 cannot_be_mother_rule(_,B) :- mother_rule(_,B).
 
 % If A is the father of B, then A cannot be the mother of B.
 cannot_be_mother_rule(A,B) :- father_rule(A,B).
 
-% If A is a parent of B, then A cannot be the mother of B.
+% If B is a parent of A, then A cannot be the mother of B.
 cannot_be_mother_rule(A,B) :- parent_rule(B,A).
 
 % If A is a sibling of B, then A cannot be the mother of B.
@@ -88,6 +88,12 @@ cannot_be_mother_rule(A,B) :- pibling_rule(A,B).
 % If B is a pibling of A, then A cannot be the mother of B.
 cannot_be_mother_rule(A,B) :- pibling_rule(B,A).
 
+% If A is a grandpibling of B, then A cannot be the mother of B.
+cannot_be_mother_rule(A,B) :- grandpibling_rule(A,B).
+
+% If B is a grandpibling of A, then A cannot be the mother of B.
+cannot_be_mother_rule(A,B) :- grandpibling_rule(B,A).
+
 % If A is equal to B, then A cannot be the mother of B.
 cannot_be_mother_rule(A,B) :- A == B.
 
@@ -97,16 +103,16 @@ cannot_be_mother_rule(A,B) :- A == B.
 % If A is not equal to B and it is stated that A is the father of B, then A is the father of B.
 father_rule(A,B) :- \+ A == B, father_declaration(A,B).
 
-% If A is a female, or A is not a male, A cannot be the father of B.
+% If A is female or A is not male, A cannot be the father of B.
 cannot_be_father_rule(A,_) :- female_rule(A); \+ male_rule(A).
 
-% If there is any person who is the father of B, then A cannot be the father of B.
+% If there exists a person who is the father of B, then someone else cannot be the father of B.
 cannot_be_father_rule(_,B) :- father_rule(_,B).
 
 % If A is the mother of B, then A cannot be the father of B.
 cannot_be_father_rule(A,B) :- mother_rule(A,B).
 
-% If A is a parent of B, then A cannot be the father of B.
+% If B is a parent of A, then A cannot be the father of B.
 cannot_be_father_rule(A,B) :- parent_rule(B,A).
 
 % If A is a sibling of B, then A cannot be the father of B.
@@ -115,7 +121,7 @@ cannot_be_father_rule(A,B) :- sibling_rule(A,B).
 % If B is a sibling of A, then A cannot be the father of B.
 cannot_be_father_rule(A,B) :- sibling_rule(B,A).
 
-% If A is a child of B, then A cannot be the father.
+% If A is a child of B, then A cannot be the father of B.
 cannot_be_father_rule(A,B) :- child_rule(A,B).
 
 % If A is a grandparent of B, then A cannot be the father of B.
@@ -129,6 +135,12 @@ cannot_be_father_rule(A,B) :- pibling_rule(A,B).
 
 % If B is a pibling of A, then A cannot be the father of B.
 cannot_be_father_rule(A,B) :- pibling_rule(B,A).
+
+% If A is a grandpibling of B, then A cannot be the father of B.
+cannot_be_father_rule(A,B) :- grandpibling_rule(A,B).
+
+% If B is a grandpibling of A, then A cannot be the father of B.
+cannot_be_father_rule(A,B) :- grandpibling_rule(B,A).
 
 % If A is equal to B, then A cannot be the father of B.
 cannot_be_father_rule(A,B) :- A == B.
@@ -162,6 +174,12 @@ cannot_be_parent_rule(A,B) :- pibling_rule(A,B).
 
 % If B is a pibling of A, then A cannot be the parent of B.
 cannot_be_parent_rule(A,B) :- pibling_rule(B,A).
+
+% If A is a grandpibling of B, then A cannot be the parent of B.
+cannot_be_parent_rule(A,B) :- grandpibling_rule(A,B).
+
+% If B is a grandpibling of A, then A cannot be the parent of B.
+cannot_be_parent_rule(A,B) :- grandpibling_rule(B,A).
 
 % If A is equal to B, then A cannot be the parent of B.
 cannot_be_parent_rule(A,B) :- A == B.
