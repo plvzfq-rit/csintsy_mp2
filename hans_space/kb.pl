@@ -167,3 +167,32 @@ brother_declaration(fill,fill).
 
     % X is an uncle of Y if A is the parent of Y, and A is a brother of X
     parent(A,Y), sister(X,Y).
+
+% relative rules
+
+    % X is a relative of Y if X is a relative of Y 
+    relative(X,Y) :- relative_declaration(X,Y);
+
+    % X and Y are relatives if they are siblings
+    sibling(X,Y); sibling(Y,X);
+
+    % X and Y are relatives if X is the parent of Y
+    parent(X,Y); parent(Y,X);
+
+    % X and Y are relatives if X is the grandparent of Y
+    grandparent(X,Y); grandparent(Y,X);
+
+    % X and Y are relatives if X is the child of Y
+    child(X,Y); child(Y,X);
+
+    % X and Y are relatives if X is the uncle of Y
+    uncle(X,Y); uncle(Y,X);
+
+    % X and Y are relatives if X is the uncle of Y
+    aunt(X,Y); aunt(Y,X);
+
+    % X and Y are relatives if Z is the aunt of X, and Z is the parent of Y
+    aunt(Z,X), child(Z,Y); 
+    
+    % X and Y are relatives if Z is the uncle of X, and Z is the parent of Y
+    uncle(Z,X), child(Z,Y).
