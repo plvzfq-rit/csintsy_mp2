@@ -3,6 +3,7 @@ father_declaration(fill,fill).
 mother_declaration(fill,fill).
 brother_declaration(fill,fill).
 aunt_declaration(fill,fill).
+son_declaration(fill,fill).
 uncle_declaration(fill,fill).
     %Testing siblings
         %1
@@ -62,9 +63,6 @@ uncle_declaration(fill,fill).
         father_declaration(k,r).
         % grandparent(j,r).
 
-        %2
-        grandparent_declaration(s,t).
-
     % Testing mother
         %1
         mother_declaration(u,v).
@@ -82,7 +80,7 @@ uncle_declaration(fill,fill).
         parent_declaration(w,x).
         male_rule(w).
         % father(w,x).
-    
+
     % Testing child
         %1
         % child(k,j)
@@ -92,11 +90,31 @@ uncle_declaration(fill,fill).
 
         %3
         % child(o,n)
-        
+
         %4
         % child(p,q)
 
-    
+    % Testing Son
+        %1
+        parent_declaration(y,z).
+        male_rule(z).
+        % son(z,y)
+
+        %2
+        son_declaration(aa,ab).
+        %2 son(aa,ab).
+
+    % Testing daughter
+        %1
+        parent(ac,ad).
+        female_rule(ad).
+        % daughter(ad,ac).
+
+        %2
+        daughter_declaration(ae,af).
+        %daughter(ae,af).
+
+
 % sibling rules --should be done
 
     % 1. X and Y are siblings if they share a parent
@@ -179,12 +197,18 @@ uncle_declaration(fill,fill).
 % son rules
 
     % X is a son of Y if X is a child of Y and X is a guy
-    son(X,Y) :- child(X,Y) , male_rule(X).
+    son(X,Y) :- child(X,Y) , male_rule(X);
+
+    % X is a son of Y if X is a son of Y
+    son_declaration(X,Y).
 
 % daughter rules
 
     % X is a son of Y if X is a child of Y and X is a guy
-    daughter(X,Y) :- child(X,Y) , female_rule(X).
+    daughter(X,Y) :- child(X,Y) , female_rule(X);
+
+    % X is a daughter of Y if X is a daughter of Y
+    daughter_declaration(X,Y).
 
 % uncle rules
 
@@ -197,33 +221,41 @@ uncle_declaration(fill,fill).
 % aunt rules
 
     % X is an aunt of Y if X is an aunt of Y
-    aunt(X,Y) :- aunt_declaration(X,Y).
+    aunt(X,Y) :- aunt_declaration(X,Y);
 
     % X is an aunt of Y if A is the parent of Y, and A is a sister of X
     parent(A,Y), sister(A,Y).
 
 % relative rules
-
+    relative(X,Y):-
     % X and Y are relatives if they are siblings
-    sibling(X,Y); sibling(Y,X);
+    sibling(X,Y);
+    sibling(Y,X);
 
     % X and Y are relatives if X is the parent of Y
-    parent(X,Y); parent(Y,X);
+    parent(X,Y);
+    parent(Y,X);
 
     % X and Y are relatives if X is the grandparent of Y
-    grandparent(X,Y); grandparent(Y,X);
+    grandparent(X,Y);
+    grandparent(Y,X);
 
     % X and Y are relatives if X is the child of Y
-    child(X,Y); child(Y,X);
+    child(X,Y);
+    child(Y,X);
 
     % X and Y are relatives if X is the uncle of Y
-    uncle(X,Y); uncle(Y,X);
+    uncle(X,Y);
+    uncle(Y,X);
 
     % X and Y are relatives if X is the uncle of Y
-    aunt(X,Y); aunt(Y,X);
+    aunt(X,Y);
+    aunt(Y,X);
 
     % X and Y are relatives if Z is the aunt of X, and Z is the parent of Y
-    aunt(Z,X), child(Z,Y);
+    aunt(Z,X),
+    child(Z,Y);
 
     % X and Y are relatives if Z is the uncle of X, and Z is the parent of Y
-    uncle(Z,X), child(Z,Y).
+    uncle(Z,X),
+    child(Z,Y).
