@@ -128,3 +128,11 @@ brother_declaration(fill,fill).
 
     % X is the mother of Y if X is the mother of Y
     mother(X,Y) :- mother_declaration(X,Y).
+
+% father rules
+
+    % X is the mother of Y if X is the parent of Y and X is a girl
+    father(X,Y) :- parent(X,Y), male_rule(X).
+
+    % X is the mother of Y if X is the mother of Y
+    father(X,Y) :- father_declaration(X,Y).
