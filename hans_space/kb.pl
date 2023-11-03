@@ -151,3 +151,19 @@ brother_declaration(fill,fill).
 
     % X is a son of Y if X is a child of Y and X is a guy
     daughter(X,Y) :- child(X,Y) , female_rule(X). 
+
+% uncle rules
+
+    % X is an uncle of Y if X is an uncle of Y
+    uncle (X,Y) :- uncle_declaration(X,Y);
+
+    % X is an uncle of Y if A is the parent of Y, and A is a brother of X
+    parent(A,Y), brother(X,Y).
+
+% aunt rules
+
+    % X is an aunt of Y if X is an aunt of Y
+    aunt (X,Y) :- aunt_declaration(X,Y);
+
+    % X is an uncle of Y if A is the parent of Y, and A is a brother of X
+    parent(A,Y), sister(X,Y).
