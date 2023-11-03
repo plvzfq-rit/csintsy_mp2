@@ -65,6 +65,38 @@ uncle_declaration(fill,fill).
         %2
         grandparent_declaration(s,t).
 
+    % Testing mother
+        %1
+        mother_declaration(u,v).
+        % mother(u,v).
+
+        %2
+        female_rule(j).
+        % mother(j,k).
+
+    % Testing father
+        %1
+        % father(n,o).
+
+        %2
+        parent_declaration(w,x).
+        male_rule(w).
+        % father(w,x).
+    
+    % Testing child
+        %1
+        % child(k,j)
+
+        %2
+        % child(m,l)
+
+        %3
+        % child(o,n)
+        
+        %4
+        % child(p,q)
+
+    
 % sibling rules --should be done
 
     % 1. X and Y are siblings if they share a parent
@@ -121,10 +153,7 @@ uncle_declaration(fill,fill).
 % grandparent rules
 
     % X is the grandparent of Y if X is the parent of Z, and Z is the parent of Y
-    grandparent(X,Y) :- parent(X,Z), parent(Z,Y);
-
-     % X is the grandparent of Y if X is the grandparent of Y
-    grandparent_declaration(X,Y).
+    grandparent(X,Y) :- parent(X,Z), parent(Z,Y).
 
 % mother rules
 
@@ -174,9 +203,6 @@ uncle_declaration(fill,fill).
     parent(A,Y), sister(A,Y).
 
 % relative rules
-
-    % X is a relative of Y if X is a relative of Y
-    relative(X,Y) :- relative_declaration(X,Y);
 
     % X and Y are relatives if they are siblings
     sibling(X,Y); sibling(Y,X);
