@@ -114,7 +114,58 @@ uncle_declaration(fill,fill).
         daughter_declaration(ae,af).
         %daughter(ae,af).
 
-    %
+    % Testing uncle
+        %1
+        uncle_declaration(ag, ah).
+        % uncle(ag,ah).
+
+        %2
+        parent_declaration(ai,aj).
+        brother_declaration(ak,ai).
+        % uncle(ak,aj).
+
+    % Testing aunt
+        %1
+        aunt_declaration(al, am).
+        % aunt(al,am).
+
+        %2
+        parent_declaration(an,ao).
+        sister_declaration(ap,an).
+        % aunt(ap,ao).
+
+    % Testing Relatives
+        %1
+        % relative(h,i).
+
+        %2
+        % relative(j,k).
+
+        %3
+        % relative(j,r).
+
+        %4
+        % relative(k,j).
+
+        %5
+        % relative(ag,ah).
+
+        %6
+        % relative (al,am)
+
+        %7
+        aunt_declaration(aaa, bbb).
+        child_declaration(ccc, aaa).
+        % relative(aaa, bbb). (commutative)
+
+        %8
+        aunt_declaration(ddd, eee).
+        child_declaration(fff, eee).
+        % relative(fff, eee). (commutative)
+
+
+
+
 
 
 % sibling rules --should be done
@@ -233,22 +284,22 @@ uncle_declaration(fill,fill).
     % X is an uncle of Y if X is an uncle of Y
     uncle(X,Y) :- uncle_declaration(X,Y);
 
-    % X is an uncle of Y if A is the parent of Y, and A is a brother of X
-    parent(A,Y), brother(A,Y).
+    % X is an uncle of Y if A is the parent of Y, and X is a brother of A
+    parent(A,Y), brother(X,A).
 
 % aunt rules
 
     % X is an aunt of Y if X is an aunt of Y
     aunt(X,Y) :- aunt_declaration(X,Y);
 
-    % X is an aunt of Y if A is the parent of Y, and A is a sister of X
-    parent(A,Y), sister(A,Y).
+    % X is an aunt of Y if A is the parent of Y, and Y is a sister of A
+    parent(A,Y), sister(X,A).
 
 % relative rules
     relative(X,Y):-
     % X and Y are relatives if they are siblings
-    sibling(X,Y);
-    sibling(Y,X);
+    siblings(X,Y);
+    siblings(Y,X);
 
     % X and Y are relatives if X is the parent of Y
     parent(X,Y);
@@ -272,8 +323,8 @@ uncle_declaration(fill,fill).
 
     % X and Y are relatives if Z is the aunt of X, and Z is the parent of Y
     aunt(Z,X),
-    child(Z,Y);
+    child(Y,Z);
 
-    % X and Y are relatives if Z is the uncle of X, and Z is the parent of Y
+    % X and Y are relatives if Z is the uncle of X, and Y is the child of Z
     uncle(Z,X),
-    child(Z,Y).
+    child(Y,Z).
