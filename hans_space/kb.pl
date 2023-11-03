@@ -114,6 +114,8 @@ uncle_declaration(fill,fill).
         daughter_declaration(ae,af).
         %daughter(ae,af).
 
+    %
+
 
 % sibling rules --should be done
 
@@ -172,6 +174,22 @@ uncle_declaration(fill,fill).
 
     % X is the grandparent of Y if X is the parent of Z, and Z is the parent of Y
     grandparent(X,Y) :- parent(X,Z), parent(Z,Y).
+
+% grandfather rules
+
+    % X is the grandfather of Y if X is a grandparent of Y, and X is a male
+    grandfather(X,Y) :- grandparent(X,Y), male_rule(X);
+
+    % X is a grandfather of Y if X is a grandfather of Y
+    grandfather_declaration(X,Y).
+
+% grandmother rules
+
+    % X is the grandmother of Y if X is a grandparent of Y, and X is a female
+    grandmother(X,Y) :- grandparent(X,Y), female_rule(X);
+
+    % X is a grandfather of Y if X is a grandfather of Y
+    grandmother_declaration(X,Y).
 
 % mother rules
 
