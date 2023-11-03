@@ -85,24 +85,16 @@ def printLine():
 #         print("Names should be capitalized!")'
 
 x = Prolog()
-x.consult("knowledge.pl")
+x.consult("kb.pl")
 
-try:    
-    j = list(x.query("is_sister(d,e).")) #true
+while True:
+    l = input("> ")
 
-    if j:
-        print("True")
-    else:
+    try:
+        b = list(x.query(l)) #false
+        if b:
+            print("True")
+        else:
+            print("False")
+    except:
         print("False")
-
-except:
-    print("False")
-
-try:
-    b = list(x.query("is_Sister(pia,hans).")) #false
-    if b:
-        print("True")
-    else:
-        print("False")
-except:
-    print("False")

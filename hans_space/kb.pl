@@ -2,7 +2,8 @@
 father_declaration(fill,fill).
 mother_declaration(fill,fill).
 brother_declaration(fill,fill).
-
+aunt_declaration(fill,fill).
+uncle_declaration(fill,fill).
     %Testing siblings
         %1
         parent_declaration(a,b).
@@ -70,19 +71,23 @@ brother_declaration(fill,fill).
     siblings(X,Y) :- parent_declaration(Z,X), parent_declaration(Z,Y), X \= Y;
 
     % 2. siblings are commutative and, X and Y are not the same person
-   (sibling_declaration(Y,X) , X \= Y);
+    (sibling_declaration(Y,X) , X \= Y);
 
     % 3. X and Y are siblings if X is the sister of Y, and X and Y are not the same person
-    (   sister_declaration(X,Y) , X \= Y);
+    ( sister_declaration(X,Y) , X \= Y);
 
     % 4. X and Y are siblings if Y is the sister of X and, X and Y are not the same person
-    (   sister_declaration(Y,X) , X \= Y);
+    (sister_declaration(Y,X) , X \= Y);
 
     % 5. X and Y are siblings if X is the brother of Y and, X and Y are not the same person
-    (   brother_declaration(X,Y) , X \= Y);
+    ( brother_declaration(X,Y) , X \= Y);
 
     % 6. X and Y are siblings if Y is the sister of X and, X and Y are not the same person
-    (   brother_declaration(Y,X) , X \= Y).
+    ( brother_declaration(Y,X) , X \= Y);
+
+    % 7. siblings are commutative and, X and Y are not the same person
+    (sibling_declaration(X,Y) , X \= Y).
+
 
 
 % sister rules
@@ -138,39 +143,39 @@ brother_declaration(fill,fill).
     father_declaration(X,Y).
 
 % child rules
- 
+
     % X is a child of Y if Y is their parent
-    child(X,Y) :- parent(Y,X);
+    child(X,Y) :- parent(Y,X).
 
 % son rules
 
     % X is a son of Y if X is a child of Y and X is a guy
-    son(X,Y) :- child(X,Y) , male_rule(X). 
+    son(X,Y) :- child(X,Y) , male_rule(X).
 
 % daughter rules
 
     % X is a son of Y if X is a child of Y and X is a guy
-    daughter(X,Y) :- child(X,Y) , female_rule(X). 
+    daughter(X,Y) :- child(X,Y) , female_rule(X).
 
 % uncle rules
 
     % X is an uncle of Y if X is an uncle of Y
-    uncle (X,Y) :- uncle_declaration(X,Y);
+    uncle(X,Y) :- uncle_declaration(X,Y);
 
     % X is an uncle of Y if A is the parent of Y, and A is a brother of X
-    parent(A,Y), brother(X,Y).
+    parent(A,Y), brother(A,Y).
 
 % aunt rules
 
     % X is an aunt of Y if X is an aunt of Y
-    aunt (X,Y) :- aunt_declaration(X,Y);
+    aunt(X,Y) :- aunt_declaration(X,Y).
 
-    % X is an uncle of Y if A is the parent of Y, and A is a brother of X
-    parent(A,Y), sister(X,Y).
+    % X is an aunt of Y if A is the parent of Y, and A is a sister of X
+    parent(A,Y), sister(A,Y).
 
 % relative rules
 
-    % X is a relative of Y if X is a relative of Y 
+    % X is a relative of Y if X is a relative of Y
     relative(X,Y) :- relative_declaration(X,Y);
 
     % X and Y are relatives if they are siblings
@@ -192,7 +197,7 @@ brother_declaration(fill,fill).
     aunt(X,Y); aunt(Y,X);
 
     % X and Y are relatives if Z is the aunt of X, and Z is the parent of Y
-    aunt(Z,X), child(Z,Y); 
-    
+    aunt(Z,X), child(Z,Y);
+
     % X and Y are relatives if Z is the uncle of X, and Z is the parent of Y
     uncle(Z,X), child(Z,Y).
