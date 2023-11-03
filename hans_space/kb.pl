@@ -15,16 +15,56 @@ brother_declaration(fill,fill).
 
         %3 and 4
         sister_declaration(f,g).
-        % siblings(f,g)
-        % siblings(g,f)
+        % siblings(f,g).
+        % siblings(g,f).
 
         %5 and 6
         brother_declaration(h,i).
-        %siblings(h,i)
-        %siblings(i,h)
+        %siblings(h,i).
+        %siblings(i,h).
 
+    %Testing Sister
+        %1
+        %sister(f,g).
 
-% sibling rules
+        %2
+        female_rule(b).
+        %sister_declaration(b,c).
+
+     %Testing Brother
+        %1
+        % brother(h,i).
+
+        %2
+        male_rule(d).
+        %brother(d,e)
+
+     %Testing parents
+        %1
+        parent_declaration(j,k).
+        %parent(j,k).
+
+        %2
+        mother_declaration(l,m).
+        %parent(l,m).
+
+        %3
+        father_declaration(n,o).
+        %parent(n,o).
+
+        %4
+        child_declaration(p,q).
+        %parent(q,p).
+
+     %Testing grandparents
+        %1
+        father_declaration(k,r).
+        % grandparent(j,r).
+
+        %2
+        grandparent_declaration(s,t).
+
+% sibling rules --should be done
 
     % 1. X and Y are siblings if they share a parent
     siblings(X,Y) :- parent_declaration(Z,X), parent_declaration(Z,Y), X \= Y;
@@ -73,9 +113,18 @@ brother_declaration(fill,fill).
     % X is the parent of Y if Y is the child of X
     parent(X,Y):- child_declaration(Y,X).
 
-    %implement grandparent rules
-
 % grandparent rules
 
-    grandparent(X,Y) :- parent(X,Z), parent(Z,Y).
+    % X is the grandparent of Y if X is the parent of Z, and Z is the parent of Y
+    grandparent(X,Y) :- parent(X,Z), parent(Z,Y);
 
+     % X is the grandparent of Y if X is the grandparent of Y
+    grandparent_declaration(X,Y).
+
+% mother rules
+
+    % X is the mother of Y if X is the parent of Y and X is a girl
+    mother(X,Y) :- parent(X,Y), female_rule(X).
+
+    % X is the mother of Y if X is the mother of Y
+    mother(X,Y) :- mother_declaration(X,Y).
