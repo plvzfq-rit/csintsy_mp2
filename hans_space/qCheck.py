@@ -25,25 +25,25 @@ def takeQprompt(p):
             elif (pArr[0] == "Are"):
                 retval = __takeArepromptfor2(p)
             else:
-                retval = False,None
+                retval = False,None,None
         except:
             return False,None
         if retval is not False:
             if retval == 1:
                 x = __getIsvals(pArr)
-                return True,x,pArr[3]
+                return retval,x,pArr[3]
             elif retval == 2 or retval == 3:
                 x = __getWhoVals(pArr)
-                return True,x,pArr[3]
+                return retval,x,pArr[3]
             elif retval == 4:
                 x = __getAreParents(pArr)
-                return True,x,pArr[5]
+                return retval,x,pArr[5]
             elif retval == 5:
                 x = __getSibsandRel(pArr)
-                return True,x,pArr[-1]
+                return retval,x,pArr[-1]
             elif retval == 6:
                 x = __getChildren(pArr)
-                return True, x, pArr[-3]
+                return retval, x, pArr[-3]
     else:
         return False,None,None
 

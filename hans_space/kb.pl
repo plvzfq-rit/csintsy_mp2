@@ -5,6 +5,8 @@ brother_declaration(fill,fill).
 aunt_declaration(fill,fill).
 son_declaration(fill,fill).
 uncle_declaration(fill,fill).
+
+    sister_declaration(x,y).
     %Testing siblings
         %1
         parent_declaration(a,b).

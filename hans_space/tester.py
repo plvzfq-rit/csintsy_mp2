@@ -1,4 +1,5 @@
 import qCheck
+import statements
 from pyswip import Prolog
 prompts = ["sister", "brother", "mother","father", 
                 "grandmother", "daughter", "son", "child",
@@ -82,19 +83,23 @@ def printLine():
 #     if validNames is True:
 #         print("Doing Function")
 #     else:
-#         print("Names should be capitalized!")'
+#         print("Names should be capitalized!")
 
 x = Prolog()
-x.consult("kb.pl")
+x.consult('kb.pl')
 
 while True:
-    l = input("> ")
-
-    try:
-        b = list(x.query(l)) #false
-        if b:
-            print("True")
-        else:
+    try: 
+        l = input("> ")
+        a,b,c = qCheck.takeQprompt(l)
+        prompt = statements.generateIs(c,b)
+        try:
+            b = list(x.query(prompt)) 
+            if b:
+                print("True")
+            else:
+                print("False")
+        except:
             print("False")
     except:
-        print("False")
+        print("Invalid Input")
