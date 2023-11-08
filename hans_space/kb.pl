@@ -5,7 +5,16 @@ brother_declaration(fill,fill).
 aunt_declaration(fill,fill).
 son_declaration(fill,fill).
 uncle_declaration(fill,fill).
-
+grandfather_declaration(lm,no).
+grandmother_declaration(pq,rs).
+siblings(a,b).
+siblings(a,c).
+siblings(a,d).
+siblings(a,e).
+child_declaration(aaaa,lol).
+child_declaration(aaab,lol).
+child_declaration(aaac,lol).
+child_declaration(aaad,lol).
     sister_declaration(x,y).
     %Testing siblings
         %1
@@ -46,6 +55,7 @@ uncle_declaration(fill,fill).
      %Testing parents
         %1
         parent_declaration(j,k).
+        parent_declaration(asd,k).
         %parent(j,k).
 
         %2

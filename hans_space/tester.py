@@ -88,17 +88,38 @@ def printLine():
 x = Prolog()
 x.consult('kb.pl')
 
+# while True:
+#     try: 
+#         l = input("> ")
+#         a,b,c = qCheck.takeQprompt(l)
+#         prompt = statements.generateIs(c,b)
+#         try:
+#             b = list(x.query(prompt)) 
+#             if b:
+#                 print("True")
+#             else:
+#                 print("False")
+#         except:
+#             print("False")
+#     except:
+#         print("Invalid Input")
+
+
 while True:
     try: 
         l = input("> ")
         a,b,c = qCheck.takeQprompt(l)
-        prompt = statements.generateIs(c,b)
+        prompts = statements.generateChildrenPrompt(b)
         try:
-            b = list(x.query(prompt)) 
-            if b:
-                print("True")
-            else:
-                print("False")
+            for prompt in prompts:
+                b = list(x.query(prompt)) 
+                if b:
+                    if not b:
+                        print("False")
+                    else:
+                        print(b)
+                else:
+                    print("False")
         except:
             print("False")
     except:

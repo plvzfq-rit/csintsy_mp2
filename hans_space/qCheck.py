@@ -91,16 +91,10 @@ def __verifyKids(x):
         for i in values:
             x.pop(i)
         
-        valid = 6
-        
         for i in range(len(x) - 2):
-            if(x[i][1] != ','):
+            if(x[i][-1] != ','):
                 return False
-
-        if (valid != 6):
-            return False
-        else:
-            return 6
+        return 6
     except:
         return False
 
@@ -121,9 +115,9 @@ def __getWhoVals(p):
 #Function to find the x,y,z on for the question Are _ and _ the parents of _?
 def __getAreParents(p):
     res = []
-    res.append(p[7])
-    res.append(p[1])
-    res.append(p[3])
+    res.append(p[7]) #child
+    res.append(p[1]) #parent1
+    res.append(p[3]) #parent2
     return res
 
 #Function to get the X and Y values on questions structured as Are _ and _ siblings/relatives
@@ -139,10 +133,16 @@ def __getChildren(p):
     for i in values:
         p.pop(i)
     res = []
-    res.append(p[-1])
-    for i in p:
-        if i not in res:
-            res.append(i)
+    parent = p[-1]
+    p.pop(-1)
+    ctr = 0
+    for names in p:
+        if ctr < len(p) - 2:
+            names = names.rstrip(names[-1])
+        ctr += 1
+        if names not in res:
+            res.append(names)
+    res.insert(0,parent)
     return res
 
 #Function to return if an array of names is valid s
