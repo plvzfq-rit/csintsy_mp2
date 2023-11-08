@@ -11,7 +11,11 @@ validWhoIsPrompts = ["mother" , "father"]
 valid2ArePrompts = ["siblings", "relatives","theparentsof","childrenof"]
 
 #Function that accepts initial user prompt
-#Returns False if Invalid, an Integer, and an array with the first element being the subject, and the right the side.
+#Returns False if Invalid
+# If valid:
+#  1st output: an Integer specifying which kind of statement (6 kinds of statements: ill send a pm of the kinds of statements)
+#  2nd output: an array with the first element being the subject eg: Is X the sister of Y? == [X,Y]. 
+#  3rd output: the kind of relationship eg: is X the sister of Y? == sister. 
 def takeQprompt(p):
     
     if (p[-1] == '?'):
