@@ -109,9 +109,8 @@ while True:
     try: 
         l = input("> ")
         a,b,c = qCheck.takeQprompt(l)
-        prompts = statements.generateChildrenPrompt(b)
+        prompt = statements.generateWhoPrompt(c,b)
         try:
-            for prompt in prompts:
                 b = list(x.query(prompt)) 
                 if b:
                     if not b:

@@ -14,7 +14,7 @@ def generateIsPrompt(x, vals):
 # Solves statements of retval 2 and 3
 # returns a statement
 def generateWhoPrompt(x,val):
-    prompt = str(x)+"(" +str(val[0]).lower() +",A)."
+    prompt = str(x)+"(A," +str(val[0]).lower()+")."
     return prompt
 
 # val - the involved individuals
@@ -28,12 +28,13 @@ def generateParentsPrompt(val):
     return res
 
 # val - the involved individuals
+# c - relationship type
 # Creates code for statements structured as: Are X and Y siblings? == sibling(X,Y).
 # Solves statements of retval 5
 # returns a statement
-def generateSiblingsPrompt(val):
+def generateSiblingsorRelativePrompt(val,c):
     res = []
-    res.append("siblings(" + str(val[0]).lower() +","+str(val[1]).lower()+").")
+    res.append(str(c) +"(" + str(val[0]).lower() +","+str(val[1]).lower()+").")
     return res
 
 
@@ -46,5 +47,5 @@ def generateChildrenPrompt(val):
     parent = val[0]
     val.pop(0)
     for i in val:
-        res.append("child("+ i +","+ parent +").")
+        res.append("child("+ i.lower() +","+ parent.lower() +").")
     return res

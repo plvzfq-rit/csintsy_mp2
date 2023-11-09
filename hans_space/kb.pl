@@ -7,14 +7,24 @@ son_declaration(fill,fill).
 uncle_declaration(fill,fill).
 grandfather_declaration(lm,no).
 grandmother_declaration(pq,rs).
-siblings(a,b).
-siblings(a,c).
-siblings(a,d).
-siblings(a,e).
+sibling_declaration(aee,brolan).
+sibling_declaration(aee,crolan).
+sibling_declaration(aee,dooloo).
+sibling_declaration(aee,euloo).
+male_rule(brolan).
+male_rule(crolan).
+female_rule(dooloo).
+female_rule(euloo).
 child_declaration(aaaa,lol).
 child_declaration(aaab,lol).
 child_declaration(aaac,lol).
 child_declaration(aaad,lol).
+son_declaration(ggg,sdfa).
+son_declaration(hh,sdfa).
+son_declaration(oos,sdfa).
+daughter_declaration(dsa,sdfa).
+daughter_declaration(da,sdfa).
+daughter_declaration(ds,sdfa).
     sister_declaration(x,y).
     %Testing siblings
         %1
@@ -64,6 +74,7 @@ child_declaration(aaad,lol).
 
         %3
         father_declaration(n,o).
+        mother_declaration(qqq,o).
         %parent(n,o).
 
         %4
@@ -74,6 +85,7 @@ child_declaration(aaad,lol).
         %1
         father_declaration(k,r).
         % grandparent(j,r).
+        grandfather(aaaa,aaab).
 
     % Testing mother
         %1
@@ -148,32 +160,32 @@ child_declaration(aaad,lol).
 
     % Testing Relatives
         %1
-        % relative(h,i).
+        % relatives(h,i).
 
         %2
-        % relative(j,k).
+        % relatives(j,k).
 
         %3
-        % relative(j,r).
+        % relatives(j,r).
 
         %4
-        % relative(k,j).
+        % relatives(k,j).
 
         %5
-        % relative(ag,ah).
+        % relatives(ag,ah).
 
         %6
-        % relative (al,am)
+        % relatives(al,am)
 
         %7
         aunt_declaration(aaa, bbb).
         child_declaration(ccc, aaa).
-        % relative(aaa, bbb). (commutative)
+        % relatives(aaa, bbb). (commutative)
 
         %8
         aunt_declaration(ddd, eee).
         child_declaration(fff, eee).
-        % relative(fff, eee). (commutative)
+        % relatives(fff, eee). (commutative)
 
 
 
@@ -183,7 +195,7 @@ child_declaration(aaad,lol).
 % sibling rules --should be done
 
     % 1. X and Y are siblings if they share a parent
-    siblings(X,Y) :- parent_declaration(Z,X), parent_declaration(Z,Y), X \= Y;
+    siblings(X,Y) :- (parent_declaration(Z,X), parent_declaration(Z,Y), X \= Y);
 
     % 2. siblings are commutative and, X and Y are not the same person
     (sibling_declaration(Y,X) , X \= Y);
@@ -198,10 +210,7 @@ child_declaration(aaad,lol).
     ( brother_declaration(X,Y) , X \= Y);
 
     % 6. X and Y are siblings if Y is the sister of X and, X and Y are not the same person
-    ( brother_declaration(Y,X) , X \= Y);
-
-    % 7. siblings are commutative and, X and Y are not the same person
-    (sibling_declaration(X,Y) , X \= Y).
+    ( brother_declaration(Y,X) , X \= Y).
 
 
 
@@ -217,7 +226,7 @@ child_declaration(aaad,lol).
 
     % X is the brother of Y if X and Y are siblings, X is a boy, and X and Y are not the same person
     brother(X,Y) :- brother_declaration(X,Y);
-                    sibling_declaration(X,Y), male_rule(X), X \= Y.
+                    siblings(X,Y), male_rule(X), X \= Y.
 
 % parent rules
 
@@ -232,6 +241,13 @@ child_declaration(aaad,lol).
 
     % X is the parent of Y if Y is the child of X
     parent(X,Y):- child_declaration(Y,X).
+
+    % X is the parent of Y if Y is the son of X
+    parent(X,Y):- son_declaration(Y,X).
+
+    % X is the parent of Y if Y is the daughter of X
+    parent(X,Y):- daughter_declaration(Y,X).
+
 
 % grandparent rules
 
@@ -251,7 +267,7 @@ child_declaration(aaad,lol).
     % X is the grandmother of Y if X is a grandparent of Y, and X is a female
     grandmother(X,Y) :- grandparent(X,Y), female_rule(X);
 
-    % X is a grandfather of Y if X is a grandfather of Y
+    % X is a grandmother of Y if X is a grandmother of Y
     grandmother_declaration(X,Y).
 
 % mother rules
@@ -308,7 +324,7 @@ child_declaration(aaad,lol).
     parent(A,Y), sister(X,A).
 
 % relative rules
-    relative(X,Y):-
+    relatives(X,Y):-
     % X and Y are relatives if they are siblings
     siblings(X,Y);
     siblings(Y,X);
@@ -340,3 +356,12 @@ child_declaration(aaad,lol).
     % X and Y are relatives if Z is the uncle of X, and Y is the child of Z
     uncle(Z,X),
     child(Y,Z).
+
+% S rules
+    brothers(X,Y) :- brother(X,Y).
+    sons(X,Y) :- son(X,Y).
+    daughters(X,Y) :- daughter(X,Y).
+    parents(X,Y) :- parent(X,Y).
+    sisters(X,Y) :- sister(X,Y).
+    children(X,Y) :- child(X,Y).
+
