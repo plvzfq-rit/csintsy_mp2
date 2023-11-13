@@ -109,7 +109,7 @@ while True:
     try: 
         l = input("> ")
         a,b,c = qCheck.takeQprompt(l)
-        prompt = statements.generateWhoPrompt(c,b)
+        prompt = statements.generateIsPrompt(c,b)
         try:
                 b = list(x.query(prompt)) 
                 if b:

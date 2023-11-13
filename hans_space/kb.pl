@@ -1,196 +1,21 @@
-%Testers
 father_declaration(fill,fill).
 mother_declaration(fill,fill).
 brother_declaration(fill,fill).
 aunt_declaration(fill,fill).
 son_declaration(fill,fill).
 uncle_declaration(fill,fill).
-grandfather_declaration(lm,no).
-grandmother_declaration(pq,rs).
-sibling_declaration(aee,brolan).
-sibling_declaration(aee,crolan).
-sibling_declaration(aee,dooloo).
-sibling_declaration(aee,euloo).
-male_rule(brolan).
-male_rule(crolan).
-female_rule(dooloo).
-female_rule(euloo).
-child_declaration(aaaa,lol).
-child_declaration(aaab,lol).
-child_declaration(aaac,lol).
-child_declaration(aaad,lol).
-son_declaration(ggg,sdfa).
-son_declaration(hh,sdfa).
-son_declaration(oos,sdfa).
-daughter_declaration(dsa,sdfa).
-daughter_declaration(da,sdfa).
-daughter_declaration(ds,sdfa).
-    sister_declaration(x,y).
-    %Testing siblings
-        %1
-        parent_declaration(a,b).
-        parent_declaration(a,c).
-        % siblings(b,c).
+parent_declaration(fill,fill).
+sibling_declaration(fill,fill).
+sister_declaration(fill,fill).
+brother_declaration(fill,fill).
+male_rule(fill).
+female_rule(fill).
+child_declaration(fill,fill).
 
-        %2
-        sibling_declaration(d,e).
-        % siblings(e,d).
-
-        %3 and 4
-        sister_declaration(f,g).
-        % siblings(f,g).
-        % siblings(g,f).
-
-        %5 and 6
-        brother_declaration(h,i).
-        %siblings(h,i).
-        %siblings(i,h).
-
-    %Testing Sister
-        %1
-        %sister(f,g).
-
-        %2
-        female_rule(b).
-        %sister_declaration(b,c).
-
-     %Testing Brother
-        %1
-        % brother(h,i).
-
-        %2
-        male_rule(d).
-        %brother(d,e)
-
-     %Testing parents
-        %1
-        parent_declaration(j,k).
-        parent_declaration(asd,k).
-        %parent(j,k).
-
-        %2
-        mother_declaration(l,m).
-        %parent(l,m).
-
-        %3
-        father_declaration(n,o).
-        mother_declaration(qqq,o).
-        %parent(n,o).
-
-        %4
-        child_declaration(p,q).
-        %parent(q,p).
-
-     %Testing grandparents
-        %1
-        father_declaration(k,r).
-        % grandparent(j,r).
-        grandfather(aaaa,aaab).
-
-    % Testing mother
-        %1
-        mother_declaration(u,v).
-        % mother(u,v).
-
-        %2
-        female_rule(j).
-        % mother(j,k).
-
-    % Testing father
-        %1
-        % father(n,o).
-
-        %2
-        parent_declaration(w,x).
-        male_rule(w).
-        % father(w,x).
-
-    % Testing child
-        %1
-        % child(k,j)
-
-        %2
-        % child(m,l)
-
-        %3
-        % child(o,n)
-
-        %4
-        % child(p,q)
-
-    % Testing Son
-        %1
-        parent_declaration(y,z).
-        male_rule(z).
-        % son(z,y)
-
-        %2
-        son_declaration(aa,ab).
-        %2 son(aa,ab).
-
-    % Testing daughter
-        %1
-        parent(ac,ad).
-        female_rule(ad).
-        % daughter(ad,ac).
-
-        %2
-        daughter_declaration(ae,af).
-        %daughter(ae,af).
-
-    % Testing uncle
-        %1
-        uncle_declaration(ag, ah).
-        % uncle(ag,ah).
-
-        %2
-        parent_declaration(ai,aj).
-        brother_declaration(ak,ai).
-        % uncle(ak,aj).
-
-    % Testing aunt
-        %1
-        aunt_declaration(al, am).
-        % aunt(al,am).
-
-        %2
-        parent_declaration(an,ao).
-        sister_declaration(ap,an).
-        % aunt(ap,ao).
-
-    % Testing Relatives
-        %1
-        % relatives(h,i).
-
-        %2
-        % relatives(j,k).
-
-        %3
-        % relatives(j,r).
-
-        %4
-        % relatives(k,j).
-
-        %5
-        % relatives(ag,ah).
-
-        %6
-        % relatives(al,am)
-
-        %7
-        aunt_declaration(aaa, bbb).
-        child_declaration(ccc, aaa).
-        % relatives(aaa, bbb). (commutative)
-
-        %8
-        aunt_declaration(ddd, eee).
-        child_declaration(fff, eee).
-        % relatives(fff, eee). (commutative)
-
-
-
-
-
+mother_declaration(anna, charlie).
+father_declaration(bob,charlie).
+mother_declaration(anna,darwin).
+father_declaration(charlie,darwin).
 
 % sibling rules --should be done
 
@@ -276,7 +101,9 @@ daughter_declaration(ds,sdfa).
     mother(X,Y) :- parent(X,Y), female_rule(X);
 
     % X is the mother of Y if X is the mother of Y
-    mother_declaration(X,Y).
+    mother_declaration(X,Y);
+
+    mother(X,Y) :- parent_declaration(X,Y), father(Z,Y).
 
 % father rules
 
@@ -284,7 +111,9 @@ daughter_declaration(ds,sdfa).
     father(X,Y) :- parent(X,Y), male_rule(X);
 
     % X is the mother of Y if X is the mother of Y
-    father_declaration(X,Y).
+    father_declaration(X,Y);
+
+    father(X,Y) :- parent_declaration(X,Y), mother(Z,Y).
 
 % child rules
 
