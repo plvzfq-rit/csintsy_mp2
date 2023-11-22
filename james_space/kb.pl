@@ -58,13 +58,13 @@ mother_rule(A,B) :- \+ A == B, mother_declaration(A,B).
 % If A is not a female, or A is a male, A cannot be the mother.
 cannot_be_mother_rule(A,_) :- \+ female_rule(A); male_rule(A).
 
-% If there is any person who is the mother of B, then A cannot be the mother of B.
+% If there is any person who is the mother of B, then someone cannot be the mother of B.
 cannot_be_mother_rule(_,B) :- mother_rule(_,B).
 
 % If A is the father of B, then A cannot be the mother of B.
 cannot_be_mother_rule(A,B) :- father_rule(A,B).
 
-% If A is a parent of B, then A cannot be the mother of B.
+% If B is a parent of A, then A cannot be the mother of B.
 cannot_be_mother_rule(A,B) :- parent_rule(B,A).
 
 % If A is a sibling of B, then A cannot be the mother of B.
