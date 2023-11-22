@@ -11,7 +11,11 @@ validWhoIsPrompts = ["mother" , "father"]
 valid2ArePrompts = ["siblings", "relatives","theparentsof","childrenof"]
 
 #Function that accepts initial user prompt
-#Returns False if Invalid, an Integer, and an array with the first element being the subject, and the right the side.
+#Returns False if Invalid
+# If valid:
+#  1st output: an Integer specifying which kind of statement (6 kinds of statements: ill send a pm of the kinds of statements)
+#  2nd output: an array with the first element being the subject eg: Is X the sister of Y? == [X,Y]. 
+#  3rd output: the kind of relationship eg: is X the sister of Y? == sister. 
 def takeQprompt(p):
     
     if (p[-1] == '?'):
@@ -25,25 +29,25 @@ def takeQprompt(p):
             elif (pArr[0] == "Are"):
                 retval = __takeArepromptfor2(p)
             else:
-                retval = False,None
+                retval = False,None,None
         except:
             return False,None
         if retval is not False:
             if retval == 1:
                 x = __getIsvals(pArr)
-                return True,x,pArr[3]
+                return retval,x,pArr[3]
             elif retval == 2 or retval == 3:
                 x = __getWhoVals(pArr)
-                return True,x,pArr[3]
+                return retval,x,pArr[3]
             elif retval == 4:
                 x = __getAreParents(pArr)
-                return True,x,pArr[5]
+                return retval,x,pArr[5]
             elif retval == 5:
                 x = __getSibsandRel(pArr)
-                return True,x,pArr[-1]
+                return retval,x,pArr[-1]
             elif retval == 6:
                 x = __getChildren(pArr)
-                return True, x, pArr[-3]
+                return retval, x, pArr[-3]
     else:
         return False,None,None
 
@@ -91,16 +95,10 @@ def __verifyKids(x):
         for i in values:
             x.pop(i)
         
-        valid = 6
-        
         for i in range(len(x) - 2):
-            if(x[i][1] != ','):
+            if(x[i][-1] != ','):
                 return False
-
-        if (valid != 6):
-            return False
-        else:
-            return 6
+        return 6
     except:
         return False
 
@@ -121,9 +119,9 @@ def __getWhoVals(p):
 #Function to find the x,y,z on for the question Are _ and _ the parents of _?
 def __getAreParents(p):
     res = []
-    res.append(p[7])
-    res.append(p[1])
-    res.append(p[3])
+    res.append(p[7]) #child
+    res.append(p[1]) #parent1
+    res.append(p[3]) #parent2
     return res
 
 #Function to get the X and Y values on questions structured as Are _ and _ siblings/relatives
@@ -139,10 +137,16 @@ def __getChildren(p):
     for i in values:
         p.pop(i)
     res = []
-    res.append(p[-1])
-    for i in p:
-        if i not in res:
-            res.append(i)
+    parent = p[-1]
+    p.pop(-1)
+    ctr = 0
+    for names in p:
+        if ctr < len(p) - 2:
+            names = names.rstrip(names[-1])
+        ctr += 1
+        if names not in res:
+            res.append(names)
+    res.insert(0,parent)
     return res
 
 #Function to return if an array of names is valid s
