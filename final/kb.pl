@@ -17,6 +17,33 @@
 % mother_declaration(anna, darwin).
 % father_declaration(charlie, darwin).
 
+exists(X) :- father_declaration(X,_).
+exists(X) :- father_declaration(_,X).
+exists(X) :- mother_declaration(X,_).
+exists(X) :- mother_declaration(_,X).
+exists(X) :- parent_declaration(X,_).
+exists(X) :- parent_declaration(_,X).
+exists(X) :- brother_declaration(X,_).
+exists(X) :- brother_declaration(_,X).
+exists(X) :- sister_declaration(X,_).
+exists(X) :- sister_declaration(_,X).
+exists(X) :- sibling_declaration(X,_).
+exists(X) :- sibling_declaration(_,X).
+exists(X) :- son_declaration(X,_).
+exists(X) :- son_declaration(_,X).
+exists(X) :- daughter_declaration(X,_).
+exists(X) :- daughter_declaration(_,X).
+exists(X) :- child_declaration(X,_).
+exists(X) :- child_declaration(_,X).
+exists(X) :- uncle_declaration(X,_).
+exists(X) :- uncle_declaration(_,X).
+exists(X) :- aunt_declaration(X,_).
+exists(X) :- aunt_declaration(_,X).
+exists(X) :- grandfather_declaration(X,_).
+exists(X) :- grandfather_declaration(_,X).
+exists(X) :- grandmother_declaration(X,_).
+exists(X) :- grandmother_declaration(_,X).
+
 same(X,Y) :- X == Y.
 same(Y,X) :- X == Y.
 
@@ -26,8 +53,8 @@ female(X) :- sister_declaration(X,_).
 female(X) :- grandmother_declaration(X,_).
 female(X) :- aunt_declaration(X,_).
 
-not_female(X) :- \+ female(X).
-not_female(X) :- male(X).
+% not_female(X) :- \+ female(X), exists(X).
+not_female(X) :- male(X), exists(X).
 
 male(X) :- father_declaration(X,_).
 male(X) :- son_declaration(X,_).
@@ -35,8 +62,8 @@ male(X) :- brother_declaration(X,_).
 male(X) :- grandfather_declaration(X,_).
 male(X) :- uncle_declaration(X,_).
 
-not_male(X) :- \+ male(X).
-not_male(X) :- female(X).
+% not_male(X) :- \+ male(X), exists(X).
+not_male(X) :- female(X), exists(X).
 
 mother(X,Y) :- mother_declaration(X,Y).
 mother(X,Y) :- female(X), parent(X,Y).
@@ -102,6 +129,16 @@ sibling(X,Y) :- sibling_declaration(X,Y).
 sibling(Y,X) :- sibling_declaration(X,Y).
 sibling(X,Y) :- sibling_declaration(Y,X).
 sibling(Y,X) :- sibling_declaration(Y,X).
+sibling(X,Y) :- brother_declaration(X,Y).
+sibling(Y,X) :- brother_declaration(X,Y).
+sibling(X,Y) :- brother_declaration(Y,X).
+sibling(Y,X) :- brother_declaration(Y,X).
+sibling(X,Y) :- sister_declaration(X,Y).
+sibling(Y,X) :- sister_declaration(X,Y).
+sibling(X,Y) :- sister_declaration(Y,X).
+sibling(Y,X) :- sister_declaration(Y,X).
+
+
 
 sibling(X,Y) :- parent(Z,X), parent(Z,Y).
 

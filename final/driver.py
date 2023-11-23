@@ -27,12 +27,13 @@ Declares a specified relation from one argument to another in a given Prolog obj
 def prologAssert121(prolog : Prolog, relation : str, arg1 : str, arg2 : str) -> str:
 
     subs1 = list(prolog.query("{}({},{})".format(relation, arg1, arg2)))
+    print(subs1)
 
-    if subs1 == []:
-        subs2 = list(prolog.query("maybe_{}({},{})".format(relation, arg1, arg2)))
+    if not subs1:
+        subs2 = list(prolog.query("not_{}({},{})".format(relation, arg1, arg2)))
         print(subs2)
         
-        if subs2 == []:
+        if not subs2:
             prolog.assertz("{}_declaration({},{})".format(relation, arg1, arg2))
             return "OK! I learned something!"
 
@@ -70,9 +71,9 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     # loops for all arguments, except is there is an erroneous value 
     while all_is_well and i < num_args1:
 
-        subs1 = list(prolog.query("not_{}({},{})".format(relation, args1[i], arg2)))
+        subs1 = list(prolog.query("maybe_{}({},{})".format(relation, args1[i], arg2)))
 
-        if subs1 == []:
+        if subs1 != []:
             i += 1
 
         else:
@@ -102,7 +103,7 @@ if __name__ == "__main__":
     prolog.consult("kb.pl")
 
     # list containing special prompts to stop the program
-    halters = ["end", "exit", "stop"]
+    halters = ["end", "exit", "stop", "halt"]
 
     # program will run indefinitely until halted
     while True:

@@ -24,6 +24,7 @@ def validateStatement(user_input: str) -> str:
         "son",
         "aunt",
         "uncle",
+        "siblings"
     ]
 
     # select list of vowels in the English language
@@ -68,9 +69,6 @@ def validateStatement(user_input: str) -> str:
             case _:
                 return "null"
 
-    elif len(words) < 7:
-        return "null"
-
     elif words[1] == "and" and words[3] == "are" and words[4] == "siblings" and words[0].istitle() and words[2].istitle():
         return words[4]
 
@@ -107,5 +105,6 @@ def validateStatement(user_input: str) -> str:
                 return "null"
         else:
             return "null"
+        
     else:
         return "null"
