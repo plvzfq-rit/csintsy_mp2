@@ -26,17 +26,18 @@ Declares a specified relation from one argument to another in a given Prolog obj
 '''
 def prologAssert121(prolog : Prolog, relation : str, arg1 : str, arg2 : str) -> str:
 
-    subs1 = list(prolog.query("{}_rule({},{})".format(relation, arg1, arg2)))
+    subs1 = list(prolog.query("{}({},{})".format(relation, arg1, arg2)))
 
     if subs1 == []:
-        subs2 = list(prolog.query("cannot_be_{}_rule({},{})".format(relation, arg1, arg2)))
-
+        subs2 = list(prolog.query("maybe_{}({},{})".format(relation, arg1, arg2)))
+        print(subs2)
+        
         if subs2 == []:
             prolog.assertz("{}_declaration({},{})".format(relation, arg1, arg2))
             return "OK! I learned something!"
 
         else:
-            return "Thats impossible!"
+            return "That's impossible!"
     else:
         return "I already know that!"
 
@@ -69,7 +70,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     # loops for all arguments, except is there is an erroneous value 
     while all_is_well and i < num_args1:
 
-        subs1 = list(prolog.query("cannot_be_{}_rule({},{})".format(relation, args1[i], arg2)))
+        subs1 = list(prolog.query("not_{}({},{})".format(relation, args1[i], arg2)))
 
         if subs1 == []:
             i += 1
@@ -80,7 +81,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     if all_is_well:
         i = 0
         while i < num_args1:
-            subs1 = list(prolog.query("{}_rule({},{})".format(relation, args1[i], arg2)))
+            subs1 = list(prolog.query("{}({},{})".format(relation, args1[i], arg2)))
             if subs1 == []:
                 prolog.assertz("{}_declaration({},{})".format(relation, args1[i], arg2))
             else:
@@ -91,7 +92,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
         else:
             return "I learned something new!"
     else:
-        return "Some things you just said are just impossible!"
+        return "Some of the things you just said are just impossible!"
 
 if __name__ == "__main__":
     # creating knowledge base
@@ -208,17 +209,17 @@ if __name__ == "__main__":
                     prompt = generateSiblingsorRelativePrompt(b)
                 elif(a == 6):
                     prompt = generateChildrenPrompt(b)
-            try:
-                b = list(prolog.query(prompt)) 
-                if b:
-                    if not b:
-                        print("False")
+                try:
+                    b = list(prolog.query(prompt)) 
+                    if b:
+                        if not b:
+                            print("False")
+                        else:
+                            print(b)
                     else:
-                        print(b)
-                else:
+                        print("False")
+                except:
                     print("False")
-            except:
-                print("False")
             # raises an error if the prompt has not been recognized
             # raises an error if the prompt has not been recognized
             else:
