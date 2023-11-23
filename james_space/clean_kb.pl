@@ -12,12 +12,13 @@
 :- dynamic aunt_declaration/2.
 :- dynamic uncle_declaration/2.
 
-mother_declaration(anna, charlie).
-father_declaration(bob, charlie).
-mother_declaration(anna, darwin).
-father_declaration(charlie, darwin).
+% mother_declaration(anna, charlie).
+% father_declaration(bob, charlie).
+% mother_declaration(anna, darwin).
+% father_declaration(charlie, darwin).
 
 same(X,Y) :- X == Y.
+same(Y,X) :- X == Y.
 
 female(X) :- mother_declaration(X,_).
 female(X) :- daughter_declaration(X,_).
@@ -41,6 +42,8 @@ mother(X,Y) :- mother_declaration(X,Y).
 mother(X,Y) :- female(X), parent(X,Y).
 mother(X,Y) :- parent(X,Y), father_declaration(Z,Y), \+ X == Z.
 mother(X,Y) :- parent(X,Y), male(Z), parent(Z,Y), \+ X == Z. 
+
+has_mother(X) :- mother(_,X).
 
 not_mother(X,_) :- not_female(X).
 not_mother(X,Y) :- not_parent(X,Y).
@@ -84,19 +87,22 @@ child(X,Y) :- father_declaration(Y,X).
 child(X,Y) :- parent_declaration(Y,X).
 
 sister(X,Y) :- sister_declaration(X,Y).
-sister(X,Y) :- female(X), sibling(X,Y).
+sister(X,Y) :- female(X), (sibling(X,Y); sibling(Y,X)).
 
 not_sister(X,_) :- not_female(X).
 not_sister(X,Y) :- not_sibling(X,Y).
 
 brother(X,Y) :- brother_declaration(X,Y).
-brother(X,Y) :- male(X), sibling(X,Y).
+brother(X,Y) :- male(X), (sibling(X,Y); sibling(Y,X)).
 
 not_brother(X,_) :- not_male(X).
 not_brother(X,Y) :- not_sibling(X,Y).
 
 sibling(X,Y) :- sibling_declaration(X,Y).
 sibling(Y,X) :- sibling_declaration(X,Y).
+sibling(X,Y) :- sibling_declaration(Y,X).
+sibling(Y,X) :- sibling_declaration(Y,X).
+
 sibling(X,Y) :- parent(Z,X), parent(Z,Y).
 
 grandmother(X,Y) :- grandmother_declaration(X,Y).
@@ -145,6 +151,16 @@ descendant_declaration(X,Y) :- grandparent(Y,X).
 descendant(X,Y) :- descendant_declaration(X,Z), descendant(Z,Y).
 descendant(X,Y) :- descendant_declaration(Z,Y).
 
+relative_declaration(X,Y) :- predecessor(X,Y).
+relative_declaration(X,Y) :- descendant(X,Y).
+relative_declaration(X,Y) :- (sibling(X,Y); sibling(Y,X)).
+relative_declaration(X,Y) :- predecessor(Z,X), descendant(Y,Z). 
+
+relative(X,Y) :- relative_declaration(X,Y).
+relative(Y,X) :- relative_declaration(X,Y).
+relative(X,Y) :- relative_declaration(Y,X).
+relative(Y,X) :- relative_declaration(Y,X).
+
 not_parent(X,Y) :- same(X,Y).
 not_parent(X,Y) :- descendant(X,Y).
 not_parent(X,Y) :- predecessor(X,Z), predecessor(Z,Y).
@@ -185,4 +201,3 @@ maybe_aunt(X,Y) :- \+ aunt(X,Y), \+ not_aunt(X,Y).
 maybe_uncle(X,Y) :- \+ uncle(X,Y), \+ not_aunt(X,Y).
 maybe_grandfather(X,Y) :- \+ grandfather(X,Y), \+ not_grandfather(X,Y).
 maybe_grandmother(X,Y) :- \+ grandmother(X,Y), \+ not_grandmother(X,Y).
-
