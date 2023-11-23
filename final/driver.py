@@ -25,7 +25,7 @@ Declares a specified relation from one argument to another in a given Prolog obj
 *-------------------------------------------------------------------------------------*
 '''
 def prologAssert121(prolog : Prolog, relation : str, arg1 : str, arg2 : str) -> str:
-
+    
     subs1 = list(prolog.query("{}({},{})".format(relation, arg1, arg2)))
     print(subs1)
 
@@ -34,6 +34,12 @@ def prologAssert121(prolog : Prolog, relation : str, arg1 : str, arg2 : str) -> 
         print(subs2)
         
         if not subs2:
+            
+            if relation == "mother" or relation == "father":
+                parcheck = list(prolog.query("has_{}({})".format(relation, arg2)))
+                if parcheck:
+                    return "That's impossible!"
+            
             prolog.assertz("{}_declaration({},{})".format(relation, arg1, arg2))
             return "OK! I learned something!"
 
@@ -78,6 +84,11 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
 
         else:
             all_is_well = False
+            
+    if relation == "parents":
+        parcheck = list(prolog.query("has_two_parents({})".format(arg2)))
+        if parcheck:
+            return "I either know this already or this is impossible."
     
     if all_is_well:
         i = 0

@@ -24,7 +24,8 @@ def validateStatement(user_input: str) -> str:
         "son",
         "aunt",
         "uncle",
-        "siblings"
+        "siblings",
+        "parents"
     ]
 
     # select list of vowels in the English language
