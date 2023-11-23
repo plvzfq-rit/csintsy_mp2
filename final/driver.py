@@ -27,11 +27,11 @@ Declares a specified relation from one argument to another in a given Prolog obj
 def prologAssert121(prolog : Prolog, relation : str, arg1 : str, arg2 : str) -> str:
     
     subs1 = list(prolog.query("{}({},{})".format(relation, arg1, arg2)))
-    print(subs1)
+    # print(subs1)
 
     if not subs1:
         subs2 = list(prolog.query("not_{}({},{})".format(relation, arg1, arg2)))
-        print(subs2)
+        # print(subs2)
         
         if not subs2:
             
@@ -77,24 +77,41 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     # loops for all arguments, except is there is an erroneous value 
     while all_is_well and i < num_args1:
 
-        subs1 = list(prolog.query("maybe_{}({},{})".format(relation, args1[i], arg2)))
+        subs1 = list(prolog.query("not_{}({},{})".format(relation, args1[i], arg2)))
 
-        if subs1 != []:
+        if not subs1:
             i += 1
 
         else:
             all_is_well = False
             
     if relation == "parents":
-        parcheck = list(prolog.query("has_two_parents({})".format(arg2)))
-        if parcheck:
-            return "I either know this already or this is impossible."
+        parents_check = list(prolog.query("has_two_parents({})".format(arg2)))
+        parent_1_check = list(prolog.query("parent({}, {})".format(args1[0], arg2)))
+        parent_2_check = list(prolog.query("parent({}, {})".format(args1[1], arg2)))
+        if parents_check:
+            if parent_1_check and parent_2_check:
+                return "I already know this!"
+            else:
+                return "Some of the things you just said are just impossible!"
+        else:
+            if parent_1_check and not parent_2_check:
+                garbage = args1.pop(0)
+                knew_it = True
+                pass    
+            elif not parent_1_check and parent_2_check:
+                garbage = args1.pop(1)
+                knew_it = True
+            # elif not parent_1_check and not parent_2_check:
+            #     pass
+            
+            
     
     if all_is_well:
         i = 0
         while i < num_args1:
             subs1 = list(prolog.query("{}({},{})".format(relation, args1[i], arg2)))
-            if subs1 == []:
+            if not subs1:
                 prolog.assertz("{}_declaration({},{})".format(relation, args1[i], arg2))
             else:
                 knew_it = knew_it or True
@@ -210,7 +227,7 @@ if __name__ == "__main__":
             elif user_input[-1] == "?":
                 # TODO: Implement checking for questions
                 print(takeQprompt(user_input))
-                a,b,c = takeQprompt(user_input)
+                a,c,b = takeQprompt(user_input)
                 if (a == 1):
                     prompt = generateIsPrompt(b,c) #generate shit for is
                 elif(a == 2 or a == 3):

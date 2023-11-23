@@ -93,6 +93,7 @@ parent(X,Y) :- daughter_declaration(Y,X).
 parent(X,Y) :- child_declaration(Y,X).
 
 has_two_parents(X) :- parent(Y,X), parent(Z, X), \+ Y == Z. 
+has_parent(X) :- parent(_,X).
 
 daughter(X,Y) :- daughter_declaration(X,Y).
 daughter(X,Y) :- female(X), child(X,Y).
@@ -137,9 +138,6 @@ sibling(X,Y) :- sister_declaration(X,Y).
 sibling(Y,X) :- sister_declaration(X,Y).
 sibling(X,Y) :- sister_declaration(Y,X).
 sibling(Y,X) :- sister_declaration(Y,X).
-
-
-
 sibling(X,Y) :- parent(Z,X), parent(Z,Y).
 
 grandmother(X,Y) :- grandmother_declaration(X,Y).
@@ -192,6 +190,7 @@ relative_declaration(X,Y) :- predecessor(X,Y).
 relative_declaration(X,Y) :- descendant(X,Y).
 relative_declaration(X,Y) :- (sibling(X,Y); sibling(Y,X)).
 relative_declaration(X,Y) :- predecessor(Z,X), descendant(Y,Z). 
+
 
 relative(X,Y) :- relative_declaration(X,Y).
 relative(Y,X) :- relative_declaration(X,Y).
