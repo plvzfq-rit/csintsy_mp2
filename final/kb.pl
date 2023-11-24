@@ -207,6 +207,12 @@ not_child(X,Y) :- sibling(X,Y).
 not_sibling(X,Y) :- same(X,Y).
 not_sibling(X,Y) :- predecessor(X,Y).
 not_sibling(X,Y) :- descendant(X,Y).
+not_sibling(X,Y) :- sibling(Z,X), parent(Y,Z).
+not_sibling(X,Y) :- sibling(Z,Y), parent(X,Z).
+not_sibling(X,Y) :- sibling(Z,X), predecessor(Y,Z).
+not_sibling(X,Y) :- sibling(Z,X), predecessor(Y,Z).
+not_sibling(X,Y) :- sibling(Z,X), descendant(Y,Z).
+not_sibling(X,Y) :- sibling(Z,X), descendant(Y,Z).
 
 not_grandparent(X,Y) :- same(X,Y).
 not_grandparent(X,Y) :- descendant(X,Y).

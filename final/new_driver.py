@@ -226,87 +226,90 @@ if __name__ == "__main__":
             # identifies queries / questions
             elif user_input[-1] == "?":
                 # TODO: Implement checking for questions
-                a,c,b = takeQprompt(user_input)
-
-                
-                match (b):
-                        case "father":
-                            b = "father"
-
-                        case "mother":
-                            b = "mother"
-
-                        case "sister":
-                            b = "sister"
-
-                        case "sisters":
-                            b = "sister"
-
-                        case "brothers":
-                            b = "brother"
-
-                        case "siblings":
-                            b = "sibling"
-
-                        case "grandmother":
-                            b = "grandmother"
-
-                        case "children":
-                            b = "child"
-
-                        case "child":
-                            b = "child"
-
-                        case "daughters":
-                            b = "daughter"
-
-                        case "uncle":
-                            b = "uncle"
-
-                        case "grandfather":
-                            b = "grandfather"
-
-                        case "sons":
-                            b = "son"
-
-                        case "aunt":
-                            b = "aunt"
-                            
-                        case "parents":
-                            b = "parent"
-
-                if (a == 1):
-                    res = generateIsPrompt(b,c) #generate stuff for is
-                elif(a == 2 or a == 3):
-                    res = generateWhoPrompt(b,c)
-                elif(a == 4):
-                    res = generateParentsPrompt(c)
-                elif(a == 5):
-                    res = generateSiblingsorRelativePrompt(c,b)
-                elif(a == 6):
-                    res = generateChildrenPrompt(c)
                 try:
-                    if (a != 2 and a != 3):
-                        print(res)
-                        #Implement maybe
-                        #Implement No
-                    else:
-                        if res == False:
-                            print("No one fits this description.")
-                        elif len(res) == 1:
-                            if(b[-1] == 's'):  
-                                print(res[0].title()+ " is the "+ b[:-1] +" of "+c[0].title())
-                            else: 
-                                print(res[0].title()+ " is the "+ b +" of "+c[0].title())
+                    a,c,b = takeQprompt(user_input)
+
+                    
+                    match (b):
+                            case "father":
+                                b = "father"
+
+                            case "mother":
+                                b = "mother"
+
+                            case "sister":
+                                b = "sister"
+
+                            case "sisters":
+                                b = "sister"
+
+                            case "brothers":
+                                b = "brother"
+
+                            case "siblings":
+                                b = "sibling"
+
+                            case "grandmother":
+                                b = "grandmother"
+
+                            case "children":
+                                b = "child"
+
+                            case "child":
+                                b = "child"
+
+                            case "daughters":
+                                b = "daughter"
+
+                            case "uncle":
+                                b = "uncle"
+
+                            case "grandfather":
+                                b = "grandfather"
+
+                            case "sons":
+                                b = "son"
+
+                            case "aunt":
+                                b = "aunt"
+                                
+                            case "parents":
+                                b = "parent"
+
+                    if (a == 1):
+                        res = generateIsPrompt(b,c) #generate stuff for is
+                    elif(a == 2 or a == 3):
+                        res = generateWhoPrompt(b,c)
+                    elif(a == 4):
+                        res = generateParentsPrompt(c)
+                    elif(a == 5):
+                        res = generateSiblingsorRelativePrompt(c,b)
+                    elif(a == 6):
+                        res = generateChildrenPrompt(c)
+                    try:
+                        if (a != 2 and a != 3):
+                            print(res)
+                            #Implement maybe
+                            #Implement No
                         else:
-                            for index, result in enumerate(res):
-                                if index == len(res) - 1:
-                                    print("and "+result.title(), end = " ")    
-                                else:
-                                    print(result.title(), end = ", ")
-                            print("are the " +b+ " of " + c[0])
-                except Exception as e:
-                    print("I do not know.")
+                            if res == False:
+                                print("No one fits this description.")
+                            elif len(res) == 1:
+                                if(b[-1] == 's'):  
+                                    print(res[0].title()+ " is the "+ b[:-1] +" of "+c[0].title())
+                                else: 
+                                    print(res[0].title()+ " is the "+ b +" of "+c[0].title())
+                            else:
+                                for index, result in enumerate(res):
+                                    if index == len(res) - 1:
+                                        print("and "+result.title(), end = " ")    
+                                    else:
+                                        print(result.title(), end = ", ")
+                                print("are the " +b+ " of " + c[0])
+                    except Exception as e:
+                        print("I do not know.")
+                except:
+                    raiseError()
             # raises an error if the prompt has not been recognized
             else:
                 raiseError()

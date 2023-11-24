@@ -68,7 +68,10 @@ def generateParentsPrompt(val):
 # Solves statements of retval 5
 # returns a statement
 def generateSiblingsorRelativePrompt(val,c):
-    prompt = str(c)[:-1] +"(" + str(val[0]).lower() +","+str(val[1]).lower()+")."
+    if c == "relatives" or c == "siblings":
+        prompt = str(c)[:-1] +"(" + str(val[0]).lower() +","+str(val[1]).lower()+")."
+    else:
+        prompt = str(c) +"(" + str(val[0]).lower() +","+str(val[1]).lower()+")."
     prompt2 = "not_"+prompt
     if(list(pro.query(prompt))):
         return yes
