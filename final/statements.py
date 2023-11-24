@@ -25,8 +25,21 @@ def generateIsPrompt(x, vals):
 # Solves statements of retval 2 and 3
 # returns a statement
 def generateWhoPrompt(x,val):
-    prompt = str(x)+"(A," +str(val[0]).lower()+")."
-    d = list(pro.query(prompt))
+    if x[-1] == "s":
+        prompt = str(x)[:-1]+"(A," +str(val[0]).lower()+")."
+    elif x == "children":
+        prompt = "child"+"(A," +str(val[0]).lower()+")."
+    else:
+        prompt = str(x)+"(A," +str(val[0]).lower()+")."
+    # memo = []
+    # d = list(pro.query(prompt))
+    # res = []
+    # for thing in d.values():
+    #     if thing not in memo:
+    #         res.append(thing)
+
+    d = list(set([dict["A"] for dict in list(pro.query(prompt))]))
+             
     if d: 
         return d
     else:

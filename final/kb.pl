@@ -12,11 +12,6 @@
 :- dynamic aunt_declaration/2.
 :- dynamic uncle_declaration/2.
 
-% mother_declaration(anna, charlie).
-% father_declaration(bob, charlie).
-% mother_declaration(anna, darwin).
-% father_declaration(charlie, darwin).
-
 exists(X) :- father_declaration(X,_).
 exists(X) :- father_declaration(_,X).
 exists(X) :- mother_declaration(X,_).
@@ -53,7 +48,6 @@ female(X) :- sister_declaration(X,_).
 female(X) :- grandmother_declaration(X,_).
 female(X) :- aunt_declaration(X,_).
 
-% not_female(X) :- \+ female(X), exists(X).
 not_female(X) :- male(X), exists(X).
 
 male(X) :- father_declaration(X,_).
@@ -62,7 +56,6 @@ male(X) :- brother_declaration(X,_).
 male(X) :- grandfather_declaration(X,_).
 male(X) :- uncle_declaration(X,_).
 
-% not_male(X) :- \+ male(X), exists(X).
 not_male(X) :- female(X), exists(X).
 
 mother(X,Y) :- mother_declaration(X,Y).
@@ -190,7 +183,6 @@ relative_declaration(X,Y) :- predecessor(X,Y).
 relative_declaration(X,Y) :- descendant(X,Y).
 relative_declaration(X,Y) :- (sibling(X,Y); sibling(Y,X)).
 relative_declaration(X,Y) :- predecessor(Z,X), descendant(Y,Z). 
-
 
 relative(X,Y) :- relative_declaration(X,Y).
 relative(Y,X) :- relative_declaration(X,Y).
