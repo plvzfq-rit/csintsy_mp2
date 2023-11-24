@@ -226,30 +226,34 @@ if __name__ == "__main__":
             # identifies queries / questions
             elif user_input[-1] == "?":
                 # TODO: Implement checking for questions
-                print(takeQprompt(user_input))
                 a,c,b = takeQprompt(user_input)
                 if (a == 1):
-                    prompt = generateIsPrompt(b,c) #generate shit for is
+                    res = generateIsPrompt(b,c) #generate shit for is
                 elif(a == 2 or a == 3):
-                    prompt = generateWhoPrompt(b,c)
+                    res = generateWhoPrompt(b,c)
                 elif(a == 4):
-                    prompt = generateParentsPrompt(b)
+                    res = generateParentsPrompt(c)
                 elif(a == 5):
-                    prompt = generateSiblingsorRelativePrompt(b)
+                    res = generateSiblingsorRelativePrompt(c,b)
                 elif(a == 6):
-                    prompt = generateChildrenPrompt(b)
+                    res = generateChildrenPrompt(c)
                 try:
-                    b = list(prolog.query(prompt)) 
-                    if b:
-                        if not b:
-                            print("False")
-                        else:
-                            print(b)
+                    if (a != 2 and a != 3):
+                        print(res)
+                        #Implement maybe
+                        #Implement No
                     else:
-                        print("False")
-                except:
-                    print("False")
-            # raises an error if the prompt has not been recognized
+                        if len(res) == 1:
+                            print(res[0]['A'].title()+ " is the brother of "+res[0])
+                        else:
+                            for index, result in enumerate(res):
+                                if index == len(res) - 1:
+                                    print(result['A'].title(), end = " ")    
+                                else:
+                                    print(result['A'].title(), end = ", and ")
+                            print("are the " +b+ " of " + c[0])
+                except Exception as e:
+                    print(e)
             # raises an error if the prompt has not been recognized
             else:
                 raiseError()

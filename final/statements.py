@@ -1,3 +1,10 @@
+from pyswip import Prolog
+pro = Prolog()
+pro.consult('kb.pl')
+
+yes = "Yes. That is correct."
+no = "No."
+maybe = "Maybe, I do not know."
 
 # x - the relation the user is looking for
 # vals - the involved individuals
@@ -5,9 +12,13 @@
 # Solves statements of retval 1
 # returns a statement
 def generateIsPrompt(x, vals):
-    prompt =  str(x) + "("+ str(vals[0]).lower() + "," + str(vals[1]).lower()+")."
-    return prompt
-
+    prompt =  str(x) + "("+ str(vals[0]).lower() + ", " + str(vals[1]).lower()+")."
+    prompt2 = "not_"+prompt
+    if(list(pro.query(prompt))):
+        return yes
+    elif(list(pro.query(prompt2))):
+        return no
+    return maybe
 # x - the relation the user is looking for
 # vals - the involved individuals
 # Creates code for statements structured as: Who are the sisters of x == sister(x,A).
@@ -15,7 +26,12 @@ def generateIsPrompt(x, vals):
 # returns a statement
 def generateWhoPrompt(x,val):
     prompt = str(x)+"(A," +str(val[0]).lower()+")."
-    return prompt
+    d = list(pro.query(prompt))
+    if d: 
+        return d
+    else:
+        return False
+
 
 # val - the involved individuals
 # Creates code for statements structured as: Are X and Y parents of Z == parents(x,z). and parents(y,z).
@@ -25,17 +41,27 @@ def generateParentsPrompt(val):
     res = []
     res.append("parent(" + str(val[1]).lower() +","+str(val[0]).lower()+").")
     res.append("parent(" + str(val[2]).lower() +","+str(val[0]).lower()+").")
-    return res
+    prompt1 = "not_"+res[0]
+    prompt2 = "not_"+res[1]
+    if(list(pro.query(res[0])) and list(pro.query(res[1]))):
+        return yes
+    elif(list(pro.query(prompt1)) or list(pro.query(prompt2))):
+        return no
+    return maybe
 
 # val - the involved individuals
 # c - relationship type
-# Creates code for statements structured as: Are X and Y siblings? == sibling(X,Y).
+# Creates code for statements structured as: Are X and Y siblings? == sibling(x,y).
 # Solves statements of retval 5
 # returns a statement
 def generateSiblingsorRelativePrompt(val,c):
-    res = []
-    res.append(str(c) +"(" + str(val[0]).lower() +","+str(val[1]).lower()+").")
-    return res
+    prompt = str(c)[:-1] +"(" + str(val[0]).lower() +","+str(val[1]).lower()+")."
+    prompt2 = "not_"+prompt
+    if(list(pro.query(prompt))):
+        return yes
+    elif(list(pro.query(prompt2)) and str(c)[:-1] == "sibling"):
+        return no
+    return maybe
 
 
 # val - the involved individuals
@@ -43,9 +69,15 @@ def generateSiblingsorRelativePrompt(val,c):
 # Solves statements of retval 6
 # returns an array of statements
 def generateChildrenPrompt(val):
-    res = []
     parent = val[0]
     val.pop(0)
     for i in val:
-        res.append("child("+ i.lower() +","+ parent.lower() +").")
-    return res
+        prompt = "child("+ i.lower() +","+ parent.lower() +")."
+        prompt2 = "not_child("+ i.lower() +","+ parent.lower() +")."
+        if list((pro.query(prompt2))):
+            return no
+        if not list((pro.query(prompt2))) and not list((pro.query(prompt))):
+            maybe = 1
+    if(maybe == 1):
+        return maybe
+    return yes

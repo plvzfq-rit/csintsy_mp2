@@ -197,6 +197,11 @@ relative(Y,X) :- relative_declaration(X,Y).
 relative(X,Y) :- relative_declaration(Y,X).
 relative(Y,X) :- relative_declaration(Y,X).
 
+not_relative(X,Y) :- \+ relative(X,Y).
+not_relative(Y,X) :- \+ relative(X,Y).
+not_relative(X,Y) :- \+ relative(Y,X).
+not_relative(Y,X) :- \+ relative(Y,X).
+
 not_parent(X,Y) :- same(X,Y).
 not_parent(X,Y) :- descendant(X,Y).
 not_parent(X,Y) :- predecessor(X,Z), predecessor(Z,Y).
