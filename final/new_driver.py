@@ -74,7 +74,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     # looper
     i = 0
 
-    # loops for all arguments, except is there is an erroneous value 
+    # loops for all arguments, except if there is an erroneous value 
     while all_is_well and i < num_args1:
 
         subs1 = list(prolog.query("not_{}({},{})".format(relation, args1[i], arg2)))
@@ -85,7 +85,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
         else:
             all_is_well = False
             
-    if relation == "parents":
+    if relation == "parent" and all_is_well:
         parents_check = list(prolog.query("has_two_parents({})".format(arg2)))
         parent_1_check = list(prolog.query("parent({}, {})".format(args1[0], arg2)))
         parent_2_check = list(prolog.query("parent({}, {})".format(args1[1], arg2)))
@@ -98,14 +98,16 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
             if parent_1_check and not parent_2_check:
                 garbage = args1.pop(0)
                 knew_it = True
-                pass    
             elif not parent_1_check and parent_2_check:
                 garbage = args1.pop(1)
                 knew_it = True
-            # elif not parent_1_check and not parent_2_check:
-            #     pass
-            
-            
+    
+    if relation == "children":
+        for child_1 in range(len(args1)):
+            for child_2 in range(child_1 + 1, child_2):
+                sibling_check = list(prolog.query("not_sibling({}, {})".format(args1[child_1], args1[child_2])))
+                if not sibling_check:
+                    return "Some of the things you just said are just impossible!"
     
     if all_is_well:
         i = 0
