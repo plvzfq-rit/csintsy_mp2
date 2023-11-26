@@ -372,8 +372,8 @@ not_pibling(X,Y) :- named_relation(X,Z), pibling(Y,Z).
 not_pibling(X,Y) :- child(Z,X), pibling(Y,Z).
 not_pibling(X,Y) :- grandparent(Z,X), pibling(Y,Z).
 
-maybe_mother(X,Y) :- \+ mother(X,Y); \+ not_mother(X,Y), \+ same(X,Y).
-maybe_father(X,Y) :- \+ father(X,Y), \+ not_father(X,Y), \+ same(X,Y).
+maybe_mother(X,Y) :- \+ mother(X,Y); \+ not_mother(X,Y), \+ same(X,Y), \+ has_mother(Y).
+maybe_father(X,Y) :- \+ father(X,Y), \+ not_father(X,Y), \+ same(X,Y), \+ has_father(Y).
 maybe_parent(X,Y) :- \+ parent(X,Y), \+ not_parent(X,Y), \+ same(X,Y).
 maybe_son(X,Y) :- \+ son(X,Y), \+ not_son(X,Y), \+ same(X,Y).
 maybe_daughter(X,Y) :- \+ daughter(X,Y), \+ not_daughter(X,Y), \+ same(X,Y).

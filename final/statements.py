@@ -18,6 +18,9 @@ def generateIsPrompt(x, vals):
         return yes
     elif(list(pro.query(prompt2))):
         return no
+    elif x == "father" or x == "mother":
+        if list(pro.query("has_{}({})".format(x, vals[1]))):
+            return no
     return maybe
 # x - the relation the user is looking for
 # vals - the involved individuals

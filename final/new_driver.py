@@ -65,9 +65,6 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     # sentinel value
     all_is_well = True
 
-    # boundary of list
-    num_args1 = len(args1)
-
     # sentinel value 2
     knew_it = False
 
@@ -75,10 +72,10 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     i = 0
 
     # loops for all arguments, except if there is an erroneous value 
-    while all_is_well and i < num_args1:
+    while all_is_well and i < len(args1):
 
         subs1 = list(prolog.query("not_{}({},{})".format(relation, args1[i], arg2)))
-
+        
         if not subs1:
             i += 1
 
@@ -87,6 +84,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
             
     if relation == "parent" and all_is_well:
         parents_check = list(prolog.query("has_two_parents({})".format(arg2)))
+        parent_check = list(prolog.query("has_parent({})".format(arg2)))
         parent_1_check = list(prolog.query("parent({}, {})".format(args1[0], arg2)))
         parent_2_check = list(prolog.query("parent({}, {})".format(args1[1], arg2)))
         if parents_check:
@@ -94,13 +92,17 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
                 return "I already know this!"
             else:
                 return "Some of the things you just said are just impossible!"
-        else:
+        elif parent_check:
             if parent_1_check and not parent_2_check:
                 garbage = args1.pop(0)
                 knew_it = True
             elif not parent_1_check and parent_2_check:
                 garbage = args1.pop(1)
                 knew_it = True
+            elif parent_1_check and parent_2_check:
+                return "I already know this!"
+            else:
+                return "That's impossible!"
     
     if relation == "children":
         for child_1 in range(len(args1)):
@@ -111,13 +113,14 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
     
     if all_is_well:
         i = 0
-        while i < num_args1:
+        while i < len(args1):
             subs1 = list(prolog.query("{}({},{})".format(relation, args1[i], arg2)))
             if not subs1:
                 prolog.assertz("{}_declaration({},{})".format(relation, args1[i], arg2))
             else:
                 knew_it = knew_it or True
             i += 1
+        print(knew_it)
         if knew_it:
             return "I learned something new, though some were things I already knew."
         else:
