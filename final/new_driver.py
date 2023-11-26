@@ -81,7 +81,7 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
 
         else:
             all_is_well = False
-            
+    
     if relation == "parent" and all_is_well:
         parents_check = list(prolog.query("has_two_parents({})".format(arg2)))
         parent_check = list(prolog.query("has_parent({})".format(arg2)))
@@ -104,11 +104,11 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
             else:
                 return "That's impossible!"
     
-    if relation == "children":
+    if relation == "child" and all_is_well:
         for child_1 in range(len(args1)):
-            for child_2 in range(child_1 + 1, child_2):
-                sibling_check = list(prolog.query("not_sibling({}, {})".format(args1[child_1], args1[child_2])))
-                if not sibling_check:
+            for child_2 in range(child_1 + 1, len(args1)):
+                not_sibling_check = list(prolog.query("not_sibling({}, {})".format(args1[child_1], args1[child_2])))
+                if not_sibling_check:
                     return "Some of the things you just said are just impossible!"
     
     if all_is_well:
@@ -120,7 +120,6 @@ def prologAssert12X(prolog : Prolog, relation : str, args1 : list[str], arg2 : s
             else:
                 knew_it = knew_it or True
             i += 1
-        print(knew_it)
         if knew_it:
             return "I learned something new, though some were things I already knew."
         else:
