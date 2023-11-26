@@ -139,6 +139,8 @@ if __name__ == "__main__":
 
     # program will run indefinitely until halted
     while True:
+        print()
+        
         # prompt for the user
         print("> ", end="")
 

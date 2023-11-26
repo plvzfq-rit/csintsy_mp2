@@ -119,19 +119,14 @@ brother(X,Y) :- male(X), (sibling(X,Y); sibling(Y,X)).
 not_brother(X,_) :- not_male(X).
 not_brother(X,Y) :- not_sibling(X,Y).
 
-sibling(X,Y) :- sibling_declaration(X,Y).
-sibling(Y,X) :- sibling_declaration(X,Y).
-sibling(X,Y) :- sibling_declaration(Y,X).
-sibling(Y,X) :- sibling_declaration(Y,X).
-sibling(X,Y) :- brother_declaration(X,Y).
-sibling(Y,X) :- brother_declaration(X,Y).
-sibling(X,Y) :- brother_declaration(Y,X).
-sibling(Y,X) :- brother_declaration(Y,X).
-sibling(X,Y) :- sister_declaration(X,Y).
-sibling(Y,X) :- sister_declaration(X,Y).
-sibling(X,Y) :- sister_declaration(Y,X).
-sibling(Y,X) :- sister_declaration(Y,X).
-sibling(X,Y) :- parent(Z,X), parent(Z,Y).
+sibling(X,Y) :- \+ same(X,Y), sibling_declaration(X,Y).
+sibling(Y,X) :- \+ same(X,Y), sibling_declaration(X,Y).
+sibling(X,Y) :- \+ same(X,Y), brother_declaration(X,Y).
+sibling(Y,X) :- \+ same(X,Y), brother_declaration(X,Y).
+sibling(X,Y) :- \+ same(X,Y), sister_declaration(X,Y).
+sibling(Y,X) :- \+ same(X,Y), sister_declaration(X,Y).
+sibling(X,Y) :- \+ same(X,Y), parent(Z,X), parent(Z,Y).
+sibling(Y,X) :- \+ same(X,Y), parent(Z,X), parent(Z,Y).
 
 grandmother(X,Y) :- grandmother_declaration(X,Y).
 grandmother(X,Y) :- female(X), grandparent(X,Y).
@@ -253,10 +248,10 @@ not_parent(X,Y) :- sibling(X,Y).
 not_parent(X,Y) :- pibling(X,Y).
 not_parent(X,Y) :- grandparent(X,Y).
 
-not_parent(X,Y) :- predecessor(Z,X), descendant(Z,Y). 
+not_parent(X,Y) :- \+ parent(X,Y), predecessor(Z,X), descendant(Z,Y). 
 not_parent(X,Y) :- grandparent(Z,X), named_relation(Z,Y).
 not_parent(X,Y) :- pibling(Z,X), named_relation(Z,Y).
-not_parent(X,Y) :- named_relation(Z,X), parent(Z,Y).
+not_parent(X,Y) :- \+ parent(X,Y), named_relation(Z,X), parent(Z,Y).
 not_parent(X,Y) :- named_relation(Z,X), child(Z,Y).
 not_parent(X,Y) :- sibling(Z,X), sibling(Z,Y).
 not_parent(X,Y) :- child(Z,X), pibling(Z,Y).
@@ -267,7 +262,10 @@ not_parent(X,Y) :- grandparent(X,Z), sibling(Z,Y).
 not_parent(X,Y) :- sibling(X,Z), grandparent(Z,Y).
 not_parent(X,Y) :- parent(X,Z), pibling(Z,Y).
 not_parent(X,Y) :- sibling(X,Z), child(Z,Y).
-not_parent(X,Y) :- named_relation(X,Z), parent(Y,Z).
+not_parent(X,Y) :- sibling(X,Z), parent(Y,Z).
+not_parent(X,Y) :- child(X,Z), parent(Y,Z).
+not_parent(X,Y) :- parent(X,Z), parent(Y,Z).
+not_parent(X,Y) :- pibling(X,Z), parent(Y,Z).
 not_parent(X,Y) :- named_relation(X,Z), grandparent(Y,Z).
 not_parent(X,Y) :- named_relation(X,Z), pibling(Y,Z).
 
