@@ -47,7 +47,8 @@ def takeQprompt(p):
                 return retval,x,pArr[-1]
             elif retval == 6:
                 x = __getChildren(pArr)
-                return retval, x, pArr[-3]
+                rel = pArr[-3]
+                return retval, x, rel
     else:
         return False,None,None
 
