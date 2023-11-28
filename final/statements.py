@@ -34,17 +34,17 @@ def generateWhoPrompt(x,val):
         prompt = "child"+"(A," +str(val[0]).lower()+")."
     else:
         prompt = str(x)+"(A," +str(val[0]).lower()+")."
-    # memo = []
-    # d = list(pro.query(prompt))
-    # res = []
-    # for thing in d.values():
-    #     if thing not in memo:
-    #         res.append(thing)
-
-    d = list(set([dict["A"] for dict in list(pro.query(prompt))]))
+        person = str(val[0]).lower()
+        memo = []
+        memo.append(person)
+        d = list(pro.query(prompt))
+        res = []
+        for thing in d:
+            if thing.get("A") not in memo:
+                res.append(thing.get("A"))
              
-    if d: 
-        return d
+    if res: 
+        return res
     else:
         return False
 
