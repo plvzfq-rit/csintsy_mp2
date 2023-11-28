@@ -88,6 +88,7 @@ def generateSiblingsorRelativePrompt(val,c):
 # Solves statements of retval 6
 # returns an array of statements
 def generateChildrenPrompt(val):
+    lol = 0
     parent = val[0]
     val.pop(0)
     for i in val:
