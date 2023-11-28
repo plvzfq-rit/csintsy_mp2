@@ -234,7 +234,7 @@ if __name__ == "__main__":
                 # TODO: Implement checking for questions
                 try:
                     a,c,b = takeQprompt(user_input)
-
+                    lol = b
                     
                     match (b):
                             case "father":
@@ -311,7 +311,7 @@ if __name__ == "__main__":
                                         print("and "+result.title(), end = " ")    
                                     else:
                                         print(result.title(), end = ", ")
-                                print("are the " +b+ " of " + c[0])
+                                print("are the " +lol+ " of " + c[0])
                     except Exception as e:
                         print("I do not know.")
                 except:
