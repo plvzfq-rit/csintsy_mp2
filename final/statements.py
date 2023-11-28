@@ -42,7 +42,7 @@ def generateWhoPrompt(x,val):
         for thing in d:
             if thing.get("A") not in memo:
                 res.append(thing.get("A"))
-             
+                memo.append(thing.get("A"))
     if res: 
         return res
     else:
