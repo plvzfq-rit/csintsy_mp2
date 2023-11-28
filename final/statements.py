@@ -96,7 +96,7 @@ def generateChildrenPrompt(val):
         if list((pro.query(prompt2))):
             return no
         if not list((pro.query(prompt2))) and not list((pro.query(prompt))):
-            maybe = 1
-    if(maybe == 1):
+            lol = 1
+    if(lol == 1):
         return maybe
     return yes
