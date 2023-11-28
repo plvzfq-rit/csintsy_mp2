@@ -212,7 +212,7 @@ not_grandparent(X,Y) :- parent(X,Y).
 not_grandparent(X,Y) :- child(X,Y).
 not_grandparent(X,Y) :- pibling(Y,X).
 not_grandparent(X,Y) :- grandparent(Y,X).
-not_grandparent(X,Y) :- descendant(X,Z), grandparent(Z,Y).
+not_grandparent(X,Y) :- predecessor(X,Z), grandparent(Z,Y).
 
 not_pibling(X,Y) :- same(X,Y).
 not_pibling(X,Y) :- descendant(X,Y).
