@@ -192,7 +192,6 @@ not_parent(X,Y) :- sibling(X,Y).
 not_parent(X,Y) :- child(X,Y).
 not_parent(X,Y) :- pibling(Y,X).
 not_parent(X,Y) :- grandparent(Y,X).
-%not_parent(X,Y) :- descendant(Z,Y), predecessor(Z,X).
 
 not_child(X,Y) :- same(X,Y).
 not_child(X,Y) :- predecessor(X,Y).
@@ -201,18 +200,8 @@ not_child(X,Y) :- sibling(X,Y).
 not_child(X,Y) :- parent(X,Y).
 not_child(X,Y) :- grandparent(X,Y).
 not_child(X,Y) :- pibling(X,Y).
-%not_child(X,Y) :- descendant(Z,X), predecessor(Z,Y).
 
 not_sibling_declaration(X,Y) :- same(X,Y).
-% not_sibling_declaration(X,Y) :- predecessor(X,Y).
-% not_sibling_declaration(X,Y) :- predecessor(Y,X).
-% not_sibling_declaration(X,Y) :- descendant(X,Y).
-% not_sibling_declaration(X,Y) :- descendant(Y,X).
-% not_sibling_declaration(X,Y) :- sibling(Z,X), predecessor(Y,Z).
-% not_sibling_declaration(X,Y) :- sibling(Z,Y), predecessor(X,Z).
-% not_sibling_declaration(X,Y) :- sibling(Z,X), descendant(Y,Z).
-% not_sibling_declaration(X,Y) :- sibling(Z,Y), descendant(X,Z).
-
 not_sibling(X,Y) :- not_sibling_declaration(X,Y).
 not_sibling(Y,X) :- not_sibling_declaration(X,Y).
 
@@ -225,12 +214,11 @@ not_grandparent(X,Y) :- pibling(Y,X).
 not_grandparent(X,Y) :- grandparent(Y,X).
 not_grandparent(X,Y) :- descendant(X,Z), grandparent(Z,Y).
 
-
 not_pibling(X,Y) :- same(X,Y).
 not_pibling(X,Y) :- descendant(X,Y).
 not_pibling(X,Y) :- sibling(X,Y).
 not_pibling(X,Y) :- parent(X,Y).
 not_pibling(X,Y) :- child(X,Y).
-not_pibling(X,Y) :- nibling(X,Y).
 not_pibling(X,Y) :- grandparent(Y,X).
+not_pibling(X,Y) :- pibling(Y,X).
 not_pibling(X,Y) :- descendant(X,Z), parent(Z,Y).
